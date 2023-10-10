@@ -1,5 +1,4 @@
 {
-  "extends": "@vue/tsconfig/tsconfig.dom.json",
   "compilerOptions": {
     "target": "esnext",
     "module": "esnext",
@@ -15,7 +14,7 @@
     "sourceMap": true,
     "resolveJsonModule": true,
     "baseUrl": ".",
-    "types": ["webpack-env", "jest", "vue"],
+    "types": ["webpack-env", "jest"],
     "paths": {
       "@/*": ["src/*"]
     },
@@ -24,3 +23,4 @@
   "include": ["src/**/*.ts", "src/**/*.tsx", "src/**/*.vue", "tests/**/*.ts", "tests/**/*.tsx"],
   "exclude": ["node_modules"]
 }
+ 
