@@ -15,7 +15,7 @@ import { defineComponent } from 'vue';
 export default defineComponent({
   data() {
     return {
-      isLightTheme: true,
+      isLightTheme: this.getThemeFromLocalStorage() ?? true,
     };
   },
   computed: {
@@ -29,6 +29,13 @@ export default defineComponent({
   methods: {
     toggleTheme(): void {
       this.isLightTheme = !this.isLightTheme;
+      this.saveThemeToLocalStorage();
+    },
+    getThemeFromLocalStorage(): boolean {
+      return localStorage.getItem('isLightTheme') === 'true';
+    },
+    saveThemeToLocalStorage(): void {
+      localStorage.setItem('isLightTheme', this.isLightTheme.toString());
     },
   },
 });
