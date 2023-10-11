@@ -1,46 +1,69 @@
-# Sport Event Calendar
+# Sport Event Calendar 📅 
 
-This template should help get you started developing with Vue 3 in Vite.
+## Welcome 🏟️
 
-## Recommended IDE Setup
+Welcome to the "Sport Calendar" application, created as part of the Sportradar Coding Academy Coding Exercise. This application provides a comprehensive solution for managing and displaying sports events, ensuring a seamless experience for sports enthusiasts 🏟️.
 
-[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur) + [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin).
+## Key Features 🌟
 
-## Type Support for `.vue` Imports in TS
+- **Overview:** The "Overview" section displays all available events. Each event includes the following information:
+  - Date and Time ⏰
+  - Sport ⚽
+  - Teams or Participants 🏆.
 
-TypeScript cannot handle type information for `.vue` imports by default, so we replace the `tsc` CLI with `vue-tsc` for type checking. In editors, we need [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin) to make the TypeScript language service aware of `.vue` types.
+- **Detail Page:** Users can dive into the details of an event by navigating to a dedicated page, where they can access comprehensive information about the selected event.
 
-If the standalone TypeScript plugin doesn't feel fast enough to you, Volar has also implemented a [Take Over Mode](https://github.com/johnsoncodehk/volar/discussions/471#discussioncomment-1361669) that is more performant. You can enable it by the following steps:
+- **Adding Events:** The application allows users to add new events on the fly. It's important to note that data is not stored long-term and is only available for the current session.
 
-1. Disable the built-in TypeScript Extension
-   1. Run `Extensions: Show Built-in Extensions` from VSCode's command palette
-   2. Find `TypeScript and JavaScript Language Features`, right click and select `Disable (Workspace)`
-2. Reload the VSCode window by running `Developer: Reload Window` from the command palette.
+- **Responsive Design:** The application boasts a responsive design, ensuring flawless display on devices with various screen sizes, including mobile and tablet devices 📱.
 
-## Customize configuration
+- **Navigation:** We've made it easy for you to switch between the main "Overview" page and the "Add Event" page for a seamless experience 🚀.
 
-See [Vite Configuration Reference](https://vitejs.dev/config/).
+## Technology Stack 💻📚
 
-## Project Setup
+- **Framework:** The application is built on the Vue.js framework 🟢 for its speed and efficiency.
+- **Styles:** SASS is used for more powerful and modular CSS design 🎨.
+- **TypeScript:** We employ TypeScript to ensure type safety and enhance scalability 📘.
+- **Code Quality:** We maintain high code quality standards with ESLint and Prettier 🧹.
+- **Testing:** Unit tests are carried out using Jest 🧪.
+- Git Hooks: **Husky** for ensuring code quality before committing.
 
-```sh
+We hope this guide helps you get familiar with the features of our "Sport Calendar" application and that it enhances your experience. Best of luck! 🥇
+
+## Getting Started 🏁
+
+Make sure to install the dependencies:
+
+```
 npm install
 ```
 
-### Compile and Hot-Reload for Development
+### Development Server
 
-```sh
-npm run dev
+Start the development server on http://localhost:3000
+
+### Compiles and hot-reloads for development
+
+```
+npm run serve
 ```
 
-### Type-Check, Compile and Minify for Production
+### Compiles and minifies for production
 
-```sh
+```
 npm run build
 ```
 
-### Lint with [ESLint](https://eslint.org/)
+### Run your unit tests
 
-```sh
+```
+npm run test:unit
+```
+
+### Lints and fixes files
+
+```
 npm run lint
 ```
+
+
