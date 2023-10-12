@@ -12,3 +12,34 @@
 
   min-height: 100vh;
 }
+
+.header__button {
+  min-width: 200px;
+  margin: 10px 0;
+  padding: 10px 20px;
+  background-color: #ac9dc5;
+  color: #3b3a3d;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition:
+    background-color 0.3s ease,
+    color 0.3s ease;
+
+  &:hover {
+    background-color: #8b7aa8;
+  }
+}
+
+.header__title {
+  font-size: 24px;
+  text-align: center; 
+  margin: 20px 0; 
+}
+
+.header__container {
+  display: flex;
+  width: 80vw;
+  margin: auto;
+  justify-content: space-between;
+}
