@@ -1,7 +1,9 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import Calendar from '@/components/SportCalendar.vue';
+</script>
 
 <template>
   <main>
-    <TheWelcome />
+    <Calendar />
   </main>
 </template>
