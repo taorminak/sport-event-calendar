@@ -3,7 +3,7 @@
     <header>
       <nav>
         <button class="header__button-mode" @click="toggleTheme">{{ themeLabel }}</button>
-        <div>Hello</div>
+        <HomeView />
       </nav>
     </header>
   </div>
@@ -11,8 +11,12 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
+import HomeView from '@/views/HomeView.vue';
 
 export default defineComponent({
+  components: {
+    HomeView,
+  },
   data() {
     return {
       isLightTheme: this.getThemeFromLocalStorage() ?? true,
