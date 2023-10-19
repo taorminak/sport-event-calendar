@@ -12,6 +12,7 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 import MainLayout from '@/views/MainLayout.vue';
+import state from './state';
 
 export default defineComponent({
   components: {
@@ -19,6 +20,7 @@ export default defineComponent({
   },
   data() {
     return {
+      state,
       isLightTheme: this.getThemeFromLocalStorage() ?? true,
     };
   },

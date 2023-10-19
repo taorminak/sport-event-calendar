@@ -1,12 +1,13 @@
 <template>
   <div class="calendar">
+    <NavigationPanel :date="date" />
     <div class="calendar__container-days">
       <div v-for="weekDay in daysOfWeek" :key="weekDay" class="container__item-day item-weekday">
         {{ weekDay }}
       </div>
 
-      <div v-for="(dayInMonth, index) in daysInMonth" :key="index" class="container__item-day">
-        {{ dayInMonth }}
+      <div v-for="(day, index) in daysInMonth" :key="index" class="container__item-day">
+        {{ day }}
       </div>
     </div>
   </div>
@@ -14,36 +15,46 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
+import NavigationPanel from './NavigationPanel.vue';
 
 const DAYS_IN_WEEK = 7;
 
+function getFirstWeekday(month: number, year: number): number {
+  const firstDayOfMonth = new Date(year, month, 1);
+  const firstWeekDay = firstDayOfMonth.getDay() === 0 ? 6 : firstDayOfMonth.getDay() - 1;
+
+  return firstWeekDay;
+}
+
+function calculateDaysInMonth(month: number, year: number): (string | number)[] {
+  const daysOfMonth = [];
+  const lastDayOfMonth = new Date(year, month + 1, 0).getDate();
+
+  const firstWeekDay = getFirstWeekday(month, year);
+
+  for (let day = 1; day <= lastDayOfMonth; day++) {
+    daysOfMonth.push(day);
+  }
+
+  for (let i = 0; i < firstWeekDay; i++) {
+    daysOfMonth.unshift('');
+  }
+
+  return daysOfMonth;
+}
+
 export default defineComponent({
-  data() {
-    return {
-      currentMonth: new Date().getMonth() + 1,
-    };
+  components: {
+    NavigationPanel,
   },
+  props: ['date'],
   computed: {
     daysInMonth() {
-      const daysOfMonth = [];
-      const year = new Date().getFullYear();
-      const month = this.currentMonth;
-      const firstDayOfMonth = new Date(year, month - 1, 1);
-      const firstWeekDay = firstDayOfMonth.getDay() === 0 ? 6 : firstDayOfMonth.getDay() - 1;
+      const currentDay = this.date;
+      const month = currentDay?.getMonth() || 0;
+      const year = currentDay?.getFullYear() || 0;
 
-      for (let day = 1; day <= 31; day++) {
-        if (new Date(year, month - 1, day).getMonth() + 1 === month) {
-          daysOfMonth.push(day);
-        } else {
-          daysOfMonth.push('');
-        }
-      }
-
-      for (let i = 0; i < firstWeekDay; i++) {
-        daysOfMonth.unshift('');
-      }
-
-      return daysOfMonth;
+      return calculateDaysInMonth(month, year);
     },
     daysOfWeek() {
       const daysOfWeek = [];

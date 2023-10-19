@@ -1,9 +1,11 @@
 <script setup lang="ts">
 import Calendar from '@/components/SportCalendar.vue';
 import { defineProps } from 'vue';
+import state from '@/state';
 
 const props = defineProps({
   navigateTo: Function,
+  date: Date,
 });
 
 const goToEvent = () => {
@@ -17,7 +19,7 @@ const goToEvent = () => {
     <button @click="goToEvent" class="header__button">Add New Event</button>
   </div>
   <main>
-    <Calendar />
+    <Calendar :date="state.state.calendarDate" />
   </main>
 </template>
 
