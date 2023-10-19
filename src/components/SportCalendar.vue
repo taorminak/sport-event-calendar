@@ -2,11 +2,21 @@
   <div class="calendar">
     <NavigationPanel :date="date" />
     <div class="calendar__container-days">
-      <div v-for="weekDay in daysOfWeek" :key="weekDay" class="container__item-day item-weekday">
+      <div
+        v-for="(weekDay, index) in daysOfWeek"
+        :key="weekDay"
+        :class="getDayClass(index, 'daysOfWeek')"
+        class="container__item-day item-weekday"
+      >
         {{ weekDay }}
       </div>
 
-      <div v-for="(day, index) in daysInMonth" :key="index" class="container__item-day">
+      <div
+        v-for="(day, index) in daysInMonth"
+        :key="index"
+        :class="getDayClass(index, 'daysInMonth')"
+        class="container__item-day"
+      >
         {{ day }}
       </div>
     </div>
@@ -68,6 +78,17 @@ export default defineComponent({
       return daysOfWeek;
     },
   },
+  methods: {
+    getDayClass(index: number, part: string): string {
+      const isWeekend = index % DAYS_IN_WEEK === 5 || index % DAYS_IN_WEEK === 6;
+
+      if (isWeekend) {
+        return part === 'daysInMonth' ? 'item-weekend' : 'item-weekend-weekday';
+      }
+
+      return '';
+    },
+  },
 });
 </script>
 
@@ -76,7 +97,7 @@ export default defineComponent({
   width: 80vw;
   margin: auto;
   margin-top: 20px;
-  border: 1px solid #c9c8d0;
+  border: 1px solid #ac9dc5;
   border-radius: 5px;
   padding: 10px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
@@ -87,15 +108,26 @@ export default defineComponent({
   flex-wrap: wrap;
   width: 100%;
   min-height: 80vh;
-  border-top: 1px solid #c9c8d0;
 
   .container__item-day {
     width: calc(100% / 7);
-    border: 1px solid #c9c8d0;
+    border: 1px solid #ac9dc5;
     padding: 10px;
     text-align: center;
-    background-color: #a5a4ab;
+    background-color: #e5e4e2;
     color: #3b3a3d;
+  }
+
+  .item-weekday {
+    background-color: #ffffff;
+  }
+
+  .item-weekend-weekday {
+    color: #a5a4ab;
+  }
+
+  .item-weekend {
+    background-color: #d7d7d7;
   }
 }
 </style>

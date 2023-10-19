@@ -1,11 +1,11 @@
 <template>
   <div class="app" :class="themeClass">
     <header>
-      <nav>
+      <nav class="header__navigation">
         <button class="header__button" @click="toggleTheme">{{ themeLabel }}</button>
-        <MainLayout />
       </nav>
     </header>
+    <MainLayout />
   </div>
 </template>
 
@@ -49,4 +49,10 @@ export default defineComponent({
 
 <style lang="scss">
 @import './assets/styles/index.scss';
+
+.header__navigation {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 </style>
