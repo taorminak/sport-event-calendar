@@ -1,8 +1,8 @@
 <template>
-  <div class="app" :class="themeClass">
+  <div class="app" :class="{ light: isLightTheme, dark: !isLightTheme }">
     <header>
       <nav class="header__navigation">
-        <button class="header__button" @click="toggleTheme">{{ themeLabel }}</button>
+        <button class="header__button" @click="toggleTheme">{{ isLightTheme ? 'Night Mode' : 'Light Mode' }}</button>
       </nav>
     </header>
     <MainLayout />
@@ -21,19 +21,14 @@ export default defineComponent({
   setup() {
     const store = useStore();
 
-    const isLightTheme = computed(() => store.state.isLightTheme);
-
-    const themeClass = computed(() => (isLightTheme.value ? 'light' : 'dark'));
-    const themeLabel = computed(() => (isLightTheme.value ? 'Night Mode' : 'Light Mode'));
+    const isLightTheme = computed(() => store.state.theme.isLightTheme);
 
     const toggleTheme = () => {
-      store.commit('toggleTheme');
+      store.commit('theme/toggleTheme');
     };
 
     return {
       isLightTheme,
-      themeClass,
-      themeLabel,
       toggleTheme,
     };
   },

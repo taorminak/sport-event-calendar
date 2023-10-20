@@ -13,6 +13,9 @@ const actions: ActionTree<EventState, RootState> = {
       context.commit('deleteEvent', eventIndex);
     }
   },
+  toggleTheme(context) {
+    context.commit('toggleTheme');
+  },
 };
 
 export default actions;

@@ -2,11 +2,10 @@ import actions from '@/store/events/actions';
 import mutations from '@/store/events/mutations';
 import getters from '@/store/events/getters';
 
-const eventsModule = {
+const themeModule = {
   namespaced: true,
   state() {
     return {
-      events: [],
       isLightTheme: true,
     };
   },
@@ -15,4 +14,4 @@ const eventsModule = {
   mutations,
 };
 
-export default eventsModule;
+export default themeModule;

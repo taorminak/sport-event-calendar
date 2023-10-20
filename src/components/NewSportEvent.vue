@@ -35,7 +35,7 @@
 </template>
 
 <script setup lang="ts">
-import { defineComponent, ref, watchEffect } from 'vue';
+import { ref, watchEffect } from 'vue';
 import { useStore } from 'vuex';
 
 const store = useStore();
