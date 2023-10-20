@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { defineProps } from 'vue';
+import NewSportEvent from '../components/NewSportEvent.vue';
 
 const props = defineProps({
   navigateTo: Function,
@@ -12,9 +13,10 @@ const goToHome = () => {
 
 <template>
   <div class="header__container">
-    <h1 class="header__title">New Event</h1>
+    <h1 class="header__title">New Sport Event</h1>
     <button @click="goToHome()" class="header__button">Go to Calendar</button>
   </div>
+  <NewSportEvent />
 </template>
 
 <style>

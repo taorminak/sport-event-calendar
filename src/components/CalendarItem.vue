@@ -2,13 +2,14 @@
   <div class="calendar__item-container">
     <div class="calendar__item-info">
       <span :class="itemClasses" class="calendar__item-date">{{ date.getDate() }}</span>
-      <button class="calendar__item-button">&plus;</button>
+      <button class="calendar__item-button" @click="addNewEvent">&plus;</button>
     </div>
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue';
+import state from '@/state';
 
 export default defineComponent({
   props: ['date'],
@@ -28,6 +29,9 @@ export default defineComponent({
       itemDate.setHours(0, 0, 0, 0);
 
       return currentDate.toISOString().split('T')[0] === itemDate.toISOString().split('T')[0];
+    },
+    addNewEvent() {
+      state.state.newEvent = { initDate: this.date };
     },
   },
 });

@@ -10,39 +10,32 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
+import { defineComponent, computed } from 'vue';
 import MainLayout from '@/views/MainLayout.vue';
-import state from './state';
+import { useStore } from 'vuex';
 
 export default defineComponent({
   components: {
     MainLayout,
   },
-  data() {
-    return {
-      state,
-      isLightTheme: this.getThemeFromLocalStorage() ?? true,
+  setup() {
+    const store = useStore();
+
+    const isLightTheme = computed(() => store.state.isLightTheme);
+
+    const themeClass = computed(() => (isLightTheme.value ? 'light' : 'dark'));
+    const themeLabel = computed(() => (isLightTheme.value ? 'Night Mode' : 'Light Mode'));
+
+    const toggleTheme = () => {
+      store.commit('toggleTheme');
     };
-  },
-  computed: {
-    themeClass(): string {
-      return this.isLightTheme ? 'light' : 'dark';
-    },
-    themeLabel(): string {
-      return this.isLightTheme ? 'Night Mode' : 'Light Mode';
-    },
-  },
-  methods: {
-    toggleTheme(): void {
-      this.isLightTheme = !this.isLightTheme;
-      this.saveThemeToLocalStorage();
-    },
-    getThemeFromLocalStorage(): boolean {
-      return localStorage.getItem('isLightTheme') === 'true';
-    },
-    saveThemeToLocalStorage(): void {
-      localStorage.setItem('isLightTheme', this.isLightTheme.toString());
-    },
+
+    return {
+      isLightTheme,
+      themeClass,
+      themeLabel,
+      toggleTheme,
+    };
   },
 });
 </script>
