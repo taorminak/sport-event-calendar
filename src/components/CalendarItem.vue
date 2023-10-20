@@ -33,14 +33,16 @@ export default defineComponent({
 });
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 $primaryColor: #ac9dc5;
 $primaryHoverColor: #9886b6;
 
 .calendar__item-container {
   padding: 10px;
-  margin: 5px;
+  margin: 0;
   border-radius: 5px;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+  min-height: 90px;
 
   .calendar__item-info {
     display: flex;

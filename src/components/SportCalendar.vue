@@ -113,10 +113,9 @@ export default defineComponent({
 
   .container__item-day {
     width: calc(100% / 7);
-    border: 1px solid #ac9dc5;
-    padding: 10px;
+    padding: 3px;
     text-align: center;
-    background-color: #e5e4e2;
+    background-color: #f0efef;
     color: #3b3a3d;
   }
 
@@ -129,7 +128,7 @@ export default defineComponent({
   }
 
   .item-weekend {
-    background-color: #d7d7d7;
+    background-color: #e8e7e7;
   }
 }
 </style>
