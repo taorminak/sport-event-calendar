@@ -17,7 +17,7 @@
         :class="getDayClass(index, 'daysInMonth')"
         class="container__item-day"
       >
-        {{ day }}
+        <Calendar-item :date="day" v-if="day" />
       </div>
     </div>
   </div>
@@ -26,6 +26,7 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 import NavigationPanel from './NavigationPanel.vue';
+import CalendarItem from './CalendarItem.vue';
 
 const DAYS_IN_WEEK = 7;
 
@@ -36,14 +37,14 @@ function getFirstWeekday(month: number, year: number): number {
   return firstWeekDay;
 }
 
-function calculateDaysInMonth(month: number, year: number): (string | number)[] {
+function calculateDaysInMonth(month: number, year: number): (string | Date)[] {
   const daysOfMonth = [];
   const lastDayOfMonth = new Date(year, month + 1, 0).getDate();
 
   const firstWeekDay = getFirstWeekday(month, year);
 
   for (let day = 1; day <= lastDayOfMonth; day++) {
-    daysOfMonth.push(day);
+    daysOfMonth.push(new Date(year, month, day));
   }
 
   for (let i = 0; i < firstWeekDay; i++) {
@@ -56,6 +57,7 @@ function calculateDaysInMonth(month: number, year: number): (string | number)[] 
 export default defineComponent({
   components: {
     NavigationPanel,
+    CalendarItem,
   },
   props: ['date'],
   computed: {
