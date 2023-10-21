@@ -2,17 +2,37 @@
   <div class="calendar__item-container">
     <div class="calendar__item-info">
       <span :class="itemClasses" class="calendar__item-date">{{ date.getDate() }}</span>
-      <button class="calendar__item-button" @click="addNewEvent">&plus;</button>
+      <button class="calendar__item-button" @click="goToEvent">&plus;</button>
     </div>
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import state from '@/state';
+import state from '../state';
 
 export default defineComponent({
-  props: ['date'],
+  props: ['date', 'navigateTo'],
+  setup(props) {
+    const goToEvent = () => {
+      console.log(props.date);
+      props.navigateTo?.('eventPage');
+
+      const selectedDay = new Date(props.date);
+
+      const year = selectedDay.getFullYear();
+      const month = (selectedDay.getMonth() + 1).toString().padStart(2, '0'); // +1 потому что месяцы считаются с 0
+      const day = selectedDay.getDate().toString().padStart(2, '0');
+
+      const formattedDate = `${year}-${month}-${day}`;
+
+      state.state.selectedDate = formattedDate;
+    };
+
+    return {
+      goToEvent,
+    };
+  },
   computed: {
     itemClasses() {
       return this.isCurrentDate(this.date) ? 'calendar__current-date' : '';
@@ -29,9 +49,6 @@ export default defineComponent({
       itemDate.setHours(0, 0, 0, 0);
 
       return currentDate.toISOString().split('T')[0] === itemDate.toISOString().split('T')[0];
-    },
-    addNewEvent() {
-      state.state.newEvent = { initDate: this.date };
     },
   },
 });

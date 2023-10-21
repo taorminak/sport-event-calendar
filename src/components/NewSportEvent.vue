@@ -37,27 +37,32 @@
 <script setup lang="ts">
 import { ref, watchEffect } from 'vue';
 import { useStore } from 'vuex';
+import state from '../state';
 
 const store = useStore();
+
 const formData = ref({
   name: '',
   description: '',
-  date: '',
+  date: state.state.selectedDate || state.state.calendarDate,
   time: '',
   status: false,
   result: '',
 });
 
+console.log(state.state.selectedDate, formData);
+
 const areRequiredFieldsValid = ref(false);
 
 const checkRequiredFields = () => {
-  areRequiredFieldsValid.value = formData.value.name !== '' && formData.value.date !== '' && formData.value.time !== '';
+  areRequiredFieldsValid.value =
+    formData.value.name !== '' && formData.value.date !== null && formData.value.time !== '';
 };
 
 const cancelEvent = () => {
   formData.value.name = '';
   formData.value.description = '';
-  formData.value.date = '';
+  formData.value.date = state.state.selectedDate || state.state.calendarDate;
   formData.value.time = '';
   formData.value.status = false;
   formData.value.result = '';

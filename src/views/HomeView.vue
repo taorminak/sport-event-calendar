@@ -19,7 +19,7 @@ const goToEvent = () => {
     <button @click="goToEvent" class="header__button">Add New Event</button>
   </div>
   <main>
-    <Calendar :date="state.state.calendarDate" />
+    <Calendar :date="state.state.calendarDate" :navigateTo="goToEvent" />
   </main>
 </template>
 

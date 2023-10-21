@@ -17,7 +17,7 @@
         :class="getDayClass(index, 'daysInMonth')"
         class="container__item-day"
       >
-        <Calendar-item :date="day" v-if="day" />
+        <Calendar-item :date="day" v-if="day" :navigateTo="navigateTo" />
       </div>
     </div>
   </div>
@@ -59,7 +59,7 @@ export default defineComponent({
     NavigationPanel,
     CalendarItem,
   },
-  props: ['date'],
+  props: ['date', 'navigateTo'],
   computed: {
     daysInMonth() {
       const currentDay = this.date;

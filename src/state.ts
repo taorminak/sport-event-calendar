@@ -9,6 +9,7 @@ const state = reactive({
 
     state.calendarDate = date;
   },
+  selectedDate: '',
 });
 
 export default {
