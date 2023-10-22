@@ -1,9 +1,9 @@
 export interface SportEvent {
-  id: number;
+  id: string;
   name: string;
   description?: string;
   status?: boolean;
   result?: string;
-  date: Date;
+  date: string;
   time: string;
 }

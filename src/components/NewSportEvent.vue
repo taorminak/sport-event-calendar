@@ -39,6 +39,7 @@ import { ref, watchEffect } from 'vue';
 import { useStore } from 'vuex';
 import state from '../state';
 import { v4 as uuidv4 } from 'uuid';
+import { SportEvent } from '@/types/interfaces/sportEvent';
 
 const store = useStore();
 
@@ -76,17 +77,27 @@ const save = () => {
       id: uuidv4(),
       name: formData.value.name,
       description: formData.value.description,
-      date: formData.value.date,
+      date: formData.value.date.toString(),
       time: formData.value.time,
       status: formData.value.status,
       result: formData.value.result,
     };
 
     store.commit('events/addEvent', formModel);
+    saveEventsToLocalStorage(formModel);
     cancelEvent();
   } else {
     console.error('Form is not valid.');
   }
+};
+
+const saveEventsToLocalStorage = (formModel: SportEvent) => {
+  const savedEvents = localStorage.getItem('events');
+  const events = savedEvents ? JSON.parse(savedEvents) : [];
+
+  events.push(formModel);
+
+  localStorage.setItem('events', JSON.stringify(events));
 };
 
 watchEffect(() => {

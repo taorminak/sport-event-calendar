@@ -20,7 +20,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from 'vue';
+import { defineComponent, ref, onMounted } from 'vue';
 import state from '../state';
 import { mapState } from 'vuex';
 import { RootState } from '@/types/interfaces/states';
@@ -31,6 +31,20 @@ export default defineComponent({
   setup(props) {
     const localDate = props.date;
     const remainingEventsCount = ref(0);
+    //имеет такое же название как получаемые events из vuex
+    const events = ref<SportEvent[]>([]);
+
+    const loadEventsFromLocalStorage = () => {
+      const savedEvents = localStorage.getItem('events');
+
+      if (savedEvents) {
+        events.value = JSON.parse(savedEvents);
+      }
+    };
+
+    onMounted(() => {
+      loadEventsFromLocalStorage();
+    });
 
     const goToEvent = () => {
       props.navigateTo?.('eventPage');
@@ -57,6 +71,7 @@ export default defineComponent({
     return {
       goToEvent,
       remainingEventsCount,
+      events,
     };
   },
   computed: {
@@ -88,7 +103,7 @@ export default defineComponent({
     filterAndSortEvents() {
       const eventDateToString = this.getFormattedDate(this.date);
 
-      //ошибка Typescript
+      //ошибка Typescript: Proxy Array
       return this.sortEvents(this.events.filter((event) => event.date === eventDateToString));
     },
     isCurrentDate(checkDate: Date) {
@@ -188,6 +203,7 @@ $primaryHoverColor: #9886b6;
       padding: 1px;
       border-radius: 5px;
       font-size: 14px;
+      text-align: left;
     }
 
     .events-number {
