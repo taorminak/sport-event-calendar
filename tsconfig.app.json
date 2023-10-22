@@ -14,7 +14,7 @@
     "sourceMap": true,
     "resolveJsonModule": true,
     "baseUrl": ".",
-    "types": ["webpack-env", "jest"],
+    "types": ["webpack-env", "jest", "uuid"],
     "paths": {
       "@/*": ["src/*"]
     },

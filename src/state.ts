@@ -2,6 +2,7 @@ import { reactive } from 'vue';
 
 const state = reactive({
   calendarDate: new Date(),
+  selectedDate: '',
   updateCalendarDate(offset: number, unit: 'month' | 'year') {
     const date = new Date(state.calendarDate);
 
@@ -9,7 +10,6 @@ const state = reactive({
 
     state.calendarDate = date;
   },
-  selectedDate: '',
 });
 
 export default {

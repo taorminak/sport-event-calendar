@@ -38,10 +38,12 @@
 import { ref, watchEffect } from 'vue';
 import { useStore } from 'vuex';
 import state from '../state';
+import { v4 as uuidv4 } from 'uuid';
 
 const store = useStore();
 
 const formData = ref({
+  id: '',
   name: '',
   description: '',
   date: state.state.selectedDate || state.state.calendarDate,
@@ -49,8 +51,6 @@ const formData = ref({
   status: false,
   result: '',
 });
-
-console.log(state.state.selectedDate, formData);
 
 const areRequiredFieldsValid = ref(false);
 
@@ -60,7 +60,7 @@ const checkRequiredFields = () => {
 };
 
 const cancelEvent = () => {
-  formData.value.name = '';
+  (formData.value.id = ''), (formData.value.name = '');
   formData.value.description = '';
   formData.value.date = state.state.selectedDate || state.state.calendarDate;
   formData.value.time = '';
@@ -73,6 +73,7 @@ const save = () => {
 
   if (areRequiredFieldsValid.value) {
     const formModel = {
+      id: uuidv4(),
       name: formData.value.name,
       description: formData.value.description,
       date: formData.value.date,
@@ -82,6 +83,7 @@ const save = () => {
     };
 
     store.commit('events/addEvent', formModel);
+    cancelEvent();
   } else {
     console.error('Form is not valid.');
   }

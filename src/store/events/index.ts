@@ -1,13 +1,15 @@
 import actions from '@/store/events/actions';
 import mutations from '@/store/events/mutations';
 import getters from '@/store/events/getters';
+import { SportEvent } from '@/types/interfaces/sportEvent';
+
+const events = [] as SportEvent[];
 
 const eventsModule = {
   namespaced: true,
   state() {
     return {
-      events: [],
-      isLightTheme: true,
+      events: events,
     };
   },
   getters,
