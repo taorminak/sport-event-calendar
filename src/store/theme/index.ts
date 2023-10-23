@@ -1,6 +1,6 @@
-import actions from '@/store/events/actions';
-import mutations from '@/store/events/mutations';
-import getters from '@/store/events/getters';
+import actions from '@/store/theme/actions';
+import mutations from '@/store/theme/mutations';
+import getters from '@/store/theme/getters';
 
 const themeModule = {
   namespaced: true,

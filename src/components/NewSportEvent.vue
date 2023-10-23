@@ -1,5 +1,5 @@
 <template>
-  <form id="event_form" class="new-event__form" ref="form" @submit.prevent="save">
+  <form id="event_form" class="new-event__form" ref="form" @submit.prevent="saveForm">
     <div class="new-event__group">
       <div class="new-event__field">
         <label for="eventName" class="new-event__label">Name of event (required):</label>
@@ -36,12 +36,11 @@
 
 <script setup lang="ts">
 import { ref, watchEffect } from 'vue';
-import { useStore } from 'vuex';
 import state from '../state';
 import { v4 as uuidv4 } from 'uuid';
 import { SportEvent } from '@/types/interfaces/sportEvent';
 
-const store = useStore();
+//const store = useStore();
 
 const formData = ref({
   id: '',
@@ -69,7 +68,7 @@ const cancelEvent = () => {
   formData.value.result = '';
 };
 
-const save = () => {
+const saveForm = () => {
   checkRequiredFields();
 
   if (areRequiredFieldsValid.value) {
@@ -83,20 +82,20 @@ const save = () => {
       result: formData.value.result,
     };
 
-    store.commit('events/addEvent', formModel);
-    saveEventsToLocalStorage(formModel);
+    //store.commit('events/addEvent', formModel);
+    saveEventToLocalStorage(formModel);
     cancelEvent();
   } else {
     console.error('Form is not valid.');
   }
 };
 
-const saveEventsToLocalStorage = (formModel: SportEvent) => {
+const saveEventToLocalStorage = (formModel: SportEvent) => {
   const savedEvents = localStorage.getItem('events');
   const events = savedEvents ? JSON.parse(savedEvents) : [];
 
   events.push(formModel);
-
+  //добавляется но удаляется при переходе в календарь
   localStorage.setItem('events', JSON.stringify(events));
 };
 

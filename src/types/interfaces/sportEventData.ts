@@ -6,7 +6,7 @@ export interface SportEventData {
   stadium: string | null;
   homeTeam: {
     name: string;
-    officialName: string;
+    officialName: string | null;
     slug: string;
     abbreviation: string;
     teamCountryCode: string;

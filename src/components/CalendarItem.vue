@@ -20,41 +20,75 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, onMounted } from 'vue';
+import { defineComponent, ref } from 'vue';
 import state from '../state';
-import { mapState } from 'vuex';
-import { RootState } from '@/types/interfaces/states';
 import { SportEvent } from '@/types/interfaces/sportEvent';
 import SportEventsData from '@/data/sportData.json';
-import { SportEventData } from '@/types/interfaces/sportEventData';
 import { v4 as uuidv4 } from 'uuid';
+
+const loaded = ref(false);
+
+function getFormattedDate(date: Date): string {
+  const year = date.getFullYear();
+  const month = (date.getMonth() + 1).toString().padStart(2, '0');
+  const day = date.getDate().toString().padStart(2, '0');
+
+  return `${year}-${month}-${day}`;
+}
 
 export default defineComponent({
   props: ['date', 'navigateTo'],
+  data() {
+    return {
+      events: [] as SportEvent[],
+      remainingEventsCount: 0,
+      loaded: false,
+    };
+  },
+  mounted() {
+    this.fetchAndSaveEvents();
+    this.loadEventsFromLocalStorage();
+  },
   setup(props) {
     const localDate = props.date;
-    const remainingEventsCount = ref(0);
-    const allEvents = ref([]);
-    //имеет такое же название как получаемые events из vuex
-    const events = ref<SportEvent[]>([]);
+    const goToEvent = () => {
+      props.navigateTo?.('eventPage');
 
-    const loadEventsFromLocalStorage = () => {
-      try {
-        const savedEvents = localStorage.getItem('events');
+      const selectedDay = new Date(localDate);
 
-        if (savedEvents) {
-          events.value = JSON.parse(savedEvents);
-        }
-      } catch (error) {
-        console.error('Error loading events from local storage:', error);
-      }
+      const formattedDate = getFormattedDate(selectedDay);
+
+      setFormattedDate(formattedDate);
     };
 
-    onMounted(() => {
-      loadEventsFromLocalStorage();
+    const setFormattedDate = (formattedDate: string) => {
+      state.state.selectedDate = formattedDate;
+    };
 
-      // ошибки Typescript
-      const eventsFromJSON = SportEventsData.data.map((eventData: SportEventData) => {
+    return {
+      goToEvent,
+    };
+  },
+  computed: {
+    itemClasses() {
+      return this.isCurrentDate(this.date) ? 'calendar__current-date' : '';
+    },
+    filteredEvents(): SportEvent[] {
+      const filtered = this.filterAndSortEvents();
+
+      this.updateRemainingEventsCount(filtered);
+
+      return filtered.slice(0, 2);
+    },
+    showEventsNumber(): boolean {
+      return this.remainingEventsCount > 0;
+    },
+  },
+  methods: {
+    fetchAndSaveEvents() {
+      loaded.value = true;
+
+      const eventsFromJSON = SportEventsData.data.map((eventData) => {
         const resultString = `${eventData.result.homeGoals} : ${eventData.result.awayGoals}`;
         const nameString =
           (eventData.homeTeam ? eventData.homeTeam.officialName : '') +
@@ -72,71 +106,26 @@ export default defineComponent({
         };
       });
 
-      const plainEvents = events.value.map((event) => ({ ...event }));
-
-      allEvents.value = plainEvents.concat(eventsFromJSON);
-    });
-
-    const goToEvent = () => {
-      props.navigateTo?.('eventPage');
-
-      const selectedDay = new Date(localDate);
-
-      const formattedDate = formatSelectedDate(selectedDay);
-
-      setFormattedDate(formattedDate);
-    };
-    //не получилось воспользоваться методом
-    const formatSelectedDate = (date: Date): string => {
-      const year = date.getFullYear();
-      const month = (date.getMonth() + 1).toString().padStart(2, '0');
-      const day = date.getDate().toString().padStart(2, '0');
-
-      return `${year}-${month}-${day}`;
-    };
-
-    const setFormattedDate = (formattedDate: string) => {
-      state.state.selectedDate = formattedDate;
-    };
-
-    return {
-      goToEvent,
-      remainingEventsCount,
-      events,
-      allEvents,
-    };
-  },
-  computed: {
-    ...mapState<RootState>({
-      events: (state: RootState) => state.events.events,
-    }),
-    itemClasses() {
-      return this.isCurrentDate(this.date) ? 'calendar__current-date' : '';
+      this.events = eventsFromJSON;
     },
-    filteredEvents(): SportEvent[] {
-      const filtered = this.filterAndSortEvents();
+    loadEventsFromLocalStorage() {
+      try {
+        const savedEvents = localStorage.getItem('events');
 
-      this.updateRemainingEventsCount(filtered);
+        if (savedEvents) {
+          const parsedEvents = JSON.parse(savedEvents);
 
-      return filtered.slice(0, 2);
+          this.events = this.events.concat(parsedEvents);
+        }
+      } catch (error) {
+        console.error('Error loading events from local storage:', error);
+      }
     },
-    showEventsNumber(): boolean {
-      return this.remainingEventsCount > 0;
-    },
-  },
-  methods: {
-    getFormattedDate(date: Date): string {
-      const year = date.getFullYear();
-      const month = (date.getMonth() + 1).toString().padStart(2, '0');
-      const day = date.getDate().toString().padStart(2, '0');
 
-      return `${year}-${month}-${day}`;
-    },
     filterAndSortEvents() {
-      const eventDateToString = this.getFormattedDate(this.date);
+      const eventDateToString = getFormattedDate(this.date);
 
-      //ошибка Typescript: Proxy Array
-      return this.sortEvents(this.allEvents.filter((event) => event.date === eventDateToString));
+      return this.sortEvents(this.events.filter((event) => event.date === eventDateToString));
     },
     isCurrentDate(checkDate: Date) {
       const currentDate = new Date();
