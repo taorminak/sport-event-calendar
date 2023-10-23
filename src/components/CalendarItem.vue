@@ -25,25 +25,56 @@ import state from '../state';
 import { mapState } from 'vuex';
 import { RootState } from '@/types/interfaces/states';
 import { SportEvent } from '@/types/interfaces/sportEvent';
+import SportEventsData from '@/data/sportData.json';
+import { SportEventData } from '@/types/interfaces/sportEventData';
+import { v4 as uuidv4 } from 'uuid';
 
 export default defineComponent({
   props: ['date', 'navigateTo'],
   setup(props) {
     const localDate = props.date;
     const remainingEventsCount = ref(0);
+    const allEvents = ref([]);
     //имеет такое же название как получаемые events из vuex
     const events = ref<SportEvent[]>([]);
 
     const loadEventsFromLocalStorage = () => {
-      const savedEvents = localStorage.getItem('events');
+      try {
+        const savedEvents = localStorage.getItem('events');
 
-      if (savedEvents) {
-        events.value = JSON.parse(savedEvents);
+        if (savedEvents) {
+          events.value = JSON.parse(savedEvents);
+        }
+      } catch (error) {
+        console.error('Error loading events from local storage:', error);
       }
     };
 
     onMounted(() => {
       loadEventsFromLocalStorage();
+
+      // ошибки Typescript
+      const eventsFromJSON = SportEventsData.data.map((eventData: SportEventData) => {
+        const resultString = `${eventData.result.homeGoals} : ${eventData.result.awayGoals}`;
+        const nameString =
+          (eventData.homeTeam ? eventData.homeTeam.officialName : '') +
+          ' - ' +
+          (eventData.awayTeam ? eventData.awayTeam.officialName : '');
+
+        return {
+          id: uuidv4(),
+          name: nameString,
+          description: eventData.originCompetitionName + ' - ' + eventData.season || '',
+          status: eventData.status || '',
+          result: resultString || '',
+          date: eventData.dateVenue,
+          time: eventData.timeVenueUTC,
+        };
+      });
+
+      const plainEvents = events.value.map((event) => ({ ...event }));
+
+      allEvents.value = plainEvents.concat(eventsFromJSON);
     });
 
     const goToEvent = () => {
@@ -72,6 +103,7 @@ export default defineComponent({
       goToEvent,
       remainingEventsCount,
       events,
+      allEvents,
     };
   },
   computed: {
@@ -104,7 +136,7 @@ export default defineComponent({
       const eventDateToString = this.getFormattedDate(this.date);
 
       //ошибка Typescript: Proxy Array
-      return this.sortEvents(this.events.filter((event) => event.date === eventDateToString));
+      return this.sortEvents(this.allEvents.filter((event) => event.date === eventDateToString));
     },
     isCurrentDate(checkDate: Date) {
       const currentDate = new Date();
@@ -138,7 +170,7 @@ export default defineComponent({
       this.remainingEventsCount = filteredEvents.length - 2;
     },
     truncateEventName(name: string) {
-      return name.length > 20 ? name.substring(0, 10) + '...' : name;
+      return name.length > 15 ? name.substring(0, 15) + '...' : name;
     },
   },
 });
