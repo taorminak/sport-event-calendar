@@ -8,12 +8,9 @@
 import { defineComponent } from 'vue';
 import Home from './HomeView.vue';
 import EventPage from './EventPageView.vue';
+import AllEventsPage from './EventListView.vue';
 
 export default defineComponent({
-  components: {
-    Home,
-    EventPage,
-  },
   data() {
     return {
       currentPage: 'home',
@@ -21,11 +18,17 @@ export default defineComponent({
   },
   computed: {
     currentPageComponent() {
-      return this.currentPage === 'eventPage' ? EventPage : Home;
+      const pages: Record<string, typeof Home | typeof EventPage | typeof AllEventsPage> = {
+        eventPage: EventPage,
+        allEvents: AllEventsPage,
+        home: Home,
+      };
+
+      return pages[this.currentPage] || Home;
     },
   },
   methods: {
-    navigateTo(page: 'home' | 'eventPage') {
+    navigateTo(page: string) {
       this.currentPage = page;
     },
   },
