@@ -35,8 +35,6 @@ export default defineComponent({
     this.daysOfWeek = daysOfWeek();
   },
   data() {
-    console.log('daysOfWeek:', this.daysOfWeek);
-
     return {
       daysOfWeek: [] as string[],
     };
@@ -69,7 +67,7 @@ export default defineComponent({
 });
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .calendar {
   width: 80vw;
   margin: auto;

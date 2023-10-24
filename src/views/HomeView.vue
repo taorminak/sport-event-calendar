@@ -1,22 +1,3 @@
-<script setup lang="ts">
-import Calendar from '@/components/SportCalendar.vue';
-import { defineProps } from 'vue';
-import state from '@/state';
-
-const props = defineProps({
-  navigateTo: Function,
-  date: Date,
-});
-
-const goToEvent = () => {
-  props.navigateTo?.('eventPage');
-};
-
-const goToAllEvents = () => {
-  props.navigateTo?.('allEvents');
-};
-</script>
-
 <template>
   <div class="header__container">
     <h1 class="header__title">2023 Sport Calendar</h1>
@@ -29,3 +10,25 @@ const goToAllEvents = () => {
     <Calendar :date="state.state.calendarDate" :navigateTo="goToEvent" />
   </main>
 </template>
+
+<script setup lang="ts">
+import Calendar from '@/components/SportCalendar.vue';
+import { defineProps } from 'vue';
+import state from '@/state';
+import { PageNames } from '@/types/enums/pageNames';
+
+const props = defineProps({
+  navigateTo: Function,
+  date: Date,
+});
+
+const goToEvent = () => {
+  props.navigateTo?.(PageNames.EventPage);
+};
+
+const goToAllEvents = () => {
+  props.navigateTo?.(PageNames.AllEvents);
+};
+</script>
+
+

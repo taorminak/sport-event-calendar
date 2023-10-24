@@ -95,7 +95,7 @@ const saveEventToLocalStorage = (formModel: SportEvent) => {
   const events = savedEvents ? JSON.parse(savedEvents) : [];
 
   events.push(formModel);
-  //добавляется но удаляется при переходе в календарь
+ 
   localStorage.setItem('events', JSON.stringify(events));
 };
 
@@ -104,7 +104,7 @@ watchEffect(() => {
 });
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .new-event__form {
   width: 80vw;
   margin: 20px;

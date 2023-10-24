@@ -1,12 +1,14 @@
 import { reactive } from 'vue';
+import { TimeUnits } from './types/enums/timeUnits';
 
+// Local State: Used for tracking and changing the calendar date
 const state = reactive({
   calendarDate: new Date(),
   selectedDate: '',
-  updateCalendarDate(offset: number, unit: 'month' | 'year') {
+  updateCalendarDate(offset: number, unit: TimeUnits) {
     const date = new Date(state.calendarDate);
 
-    unit === 'month' ? date.setMonth(date.getMonth() + offset) : date.setFullYear(date.getFullYear() + offset);
+    unit === TimeUnits.Month ? date.setMonth(date.getMonth() + offset) : date.setFullYear(date.getFullYear() + offset);
 
     state.calendarDate = date;
   },

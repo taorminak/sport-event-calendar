@@ -4,6 +4,5 @@ export interface SportEvent {
   description: string;
   date: string;
   time: string;
-  //status: boolean;
   result: string;
 }

@@ -16,6 +16,8 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 import state from '@/state';
+import { TimeUnits } from '@/types/enums/timeUnits';
+import { MonthFormats } from '@/types/enums/timeUnits';
 
 export default defineComponent({
   props: ['date'],
@@ -24,15 +26,15 @@ export default defineComponent({
       return this.date?.getFullYear();
     },
     getMonth() {
-      return this.date?.toLocaleString('en-US', { month: 'short' });
+      return this.date?.toLocaleString('en-US', { month: MonthFormats.Short });
     },
   },
   methods: {
     changeMonth(offset: number) {
-      state.state.updateCalendarDate(offset, 'month');
+      state.state.updateCalendarDate(offset, TimeUnits.Month);
     },
     changeYear(offset: number) {
-      state.state.updateCalendarDate(offset, 'year');
+      state.state.updateCalendarDate(offset, TimeUnits.Year);
     },
     incrementMonth() {
       this.changeMonth(1);

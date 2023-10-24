@@ -51,7 +51,7 @@ export default defineComponent({
 });
 </script>
 
-<style scoped lang="scss">
+<style lang="scss" scoped>
 .event-table {
   display: flex;
   flex-direction: column;

@@ -1,4 +1,5 @@
-import { DAYS_IN_WEEK } from '@/constants';
+import { DAYS_IN_WEEK, LOCALE } from '@/constants';
+import { WeekdayFormats } from '@/types/enums/timeUnits';
 
 export function getFormattedDate(date: Date): string {
   const year = date.getFullYear();
@@ -8,16 +9,21 @@ export function getFormattedDate(date: Date): string {
   return `${year}-${month}-${day}`;
 }
 
-export function isCurrentDate(checkDate: Date) {
-  const currentDate = new Date();
+export function isCurrentDate(checkDate: Date):boolean {
+  const currentDate = removeTimeFromDate(new Date());
+  const itemDate = removeTimeFromDate(checkDate);
 
-  currentDate.setHours(0, 0, 0, 0);
+  return areDatesEqual(currentDate, itemDate);
+}
 
-  const itemDate = new Date(checkDate);
+function removeTimeFromDate(date: Date):Date {
+  const dateWithoutTime = new Date(date);
+  dateWithoutTime.setHours(0, 0, 0, 0);
+  return dateWithoutTime;
+}
 
-  itemDate.setHours(0, 0, 0, 0);
-
-  return currentDate.toISOString().split('T')[0] === itemDate.toISOString().split('T')[0];
+function areDatesEqual(date1: Date, date2: Date): boolean {
+  return date1.toISOString().split('T')[0] === date2.toISOString().split('T')[0];
 }
 
 export function getFirstWeekday(month: number, year: number): number {
@@ -44,15 +50,14 @@ export function calculateDaysInMonth(month: number, year: number): (string | Dat
   return daysOfMonth;
 }
 
-export function daysOfWeek() {
+export function daysOfWeek(): string[] {
   const daysOfWeek = [];
   const startDate = new Date('2023-10-16');
 
   for (let i = 0; i < DAYS_IN_WEEK; i++) {
-    daysOfWeek.push(startDate.toLocaleDateString('en-EN', { weekday: 'short' }));
+    daysOfWeek.push(startDate.toLocaleDateString(LOCALE, { weekday: WeekdayFormats.Short }));
     startDate.setDate(startDate.getDate() + 1);
   }
-  console.log(daysOfWeek);
 
   return daysOfWeek;
 }

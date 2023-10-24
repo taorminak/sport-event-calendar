@@ -1,20 +1,3 @@
-<script setup lang="ts">
-import { defineProps } from 'vue';
-import EventsList from '@/components/EventsList.vue';
-
-const props = defineProps({
-  navigateTo: Function,
-});
-
-const goToEvent = () => {
-  props.navigateTo?.('eventPage');
-};
-
-const goToHome = () => {
-  props.navigateTo?.('home');
-};
-</script>
-
 <template>
   <div class="header__container">
     <h1 class="header__title">All Sport Events</h1>
@@ -25,3 +8,23 @@ const goToHome = () => {
   </div>
   <EventsList />
 </template>
+
+<script setup lang="ts">
+import { defineProps } from 'vue';
+import EventsList from '@/components/EventsList.vue';
+import { PageNames } from '@/types/enums/pageNames';
+
+const props = defineProps({
+  navigateTo: Function,
+});
+
+const goToEvent = () => {
+  props.navigateTo?.(PageNames.EventPage);
+};
+
+const goToHome = () => {
+  props.navigateTo?.(PageNames.Home);
+};
+</script>
+
+
