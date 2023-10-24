@@ -27,34 +27,20 @@
 import { defineComponent } from 'vue';
 import NavigationPanel from './NavigationPanel.vue';
 import CalendarItem from './CalendarItem.vue';
-
-const DAYS_IN_WEEK = 7;
-
-function getFirstWeekday(month: number, year: number): number {
-  const firstDayOfMonth = new Date(year, month, 1);
-  const firstWeekDay = firstDayOfMonth.getDay() === 0 ? 6 : firstDayOfMonth.getDay() - 1;
-
-  return firstWeekDay;
-}
-
-function calculateDaysInMonth(month: number, year: number): (string | Date)[] {
-  const daysOfMonth = [];
-  const lastDayOfMonth = new Date(year, month + 1, 0).getDate();
-
-  const firstWeekDay = getFirstWeekday(month, year);
-
-  for (let day = 1; day <= lastDayOfMonth; day++) {
-    daysOfMonth.push(new Date(year, month, day));
-  }
-
-  for (let i = 0; i < firstWeekDay; i++) {
-    daysOfMonth.unshift('');
-  }
-
-  return daysOfMonth;
-}
+import { calculateDaysInMonth, daysOfWeek } from '@/helpers/date-helpers/dateHelpers';
+import { DAYS_IN_WEEK } from '@/constants';
 
 export default defineComponent({
+  created() {
+    this.daysOfWeek = daysOfWeek();
+  },
+  data() {
+    console.log('daysOfWeek:', this.daysOfWeek);
+
+    return {
+      daysOfWeek: [] as string[],
+    };
+  },
   components: {
     NavigationPanel,
     CalendarItem,
@@ -67,17 +53,6 @@ export default defineComponent({
       const year = currentDay?.getFullYear() || 0;
 
       return calculateDaysInMonth(month, year);
-    },
-    daysOfWeek() {
-      const daysOfWeek = [];
-      const startDate = new Date('2023-10-16');
-
-      for (let i = 0; i < DAYS_IN_WEEK; i++) {
-        daysOfWeek.push(startDate.toLocaleDateString('en-EN', { weekday: 'short' }));
-        startDate.setDate(startDate.getDate() + 1);
-      }
-
-      return daysOfWeek;
     },
   },
   methods: {

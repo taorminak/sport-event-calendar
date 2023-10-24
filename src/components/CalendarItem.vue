@@ -20,21 +20,11 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from 'vue';
+import { defineComponent } from 'vue';
 import state from '../state';
 import { SportEvent } from '@/types/interfaces/sportEvent';
-import SportEventsData from '@/data/sportData.json';
-import { v4 as uuidv4 } from 'uuid';
-
-const loaded = ref(false);
-
-function getFormattedDate(date: Date): string {
-  const year = date.getFullYear();
-  const month = (date.getMonth() + 1).toString().padStart(2, '0');
-  const day = date.getDate().toString().padStart(2, '0');
-
-  return `${year}-${month}-${day}`;
-}
+import { getFormattedDate, isCurrentDate } from '@/helpers/date-helpers/dateHelpers';
+import { loadEventsFromLocalStorage, fetchAndSaveEvents, sortEventsByTime } from '@/helpers/data-handling/dataHandling';
 
 export default defineComponent({
   props: ['date', 'navigateTo'],
@@ -46,8 +36,8 @@ export default defineComponent({
     };
   },
   mounted() {
-    this.fetchAndSaveEvents();
-    this.loadEventsFromLocalStorage();
+    fetchAndSaveEvents.call(this);
+    loadEventsFromLocalStorage.call(this);
   },
   setup(props) {
     const localDate = props.date;
@@ -71,7 +61,7 @@ export default defineComponent({
   },
   computed: {
     itemClasses() {
-      return this.isCurrentDate(this.date) ? 'calendar__current-date' : '';
+      return isCurrentDate(this.date) ? 'calendar__current-date' : '';
     },
     filteredEvents(): SportEvent[] {
       const filtered = this.filterAndSortEvents();
@@ -85,76 +75,12 @@ export default defineComponent({
     },
   },
   methods: {
-    fetchAndSaveEvents() {
-      loaded.value = true;
-
-      const eventsFromJSON = SportEventsData.data.map((eventData) => {
-        const resultString = `${eventData.result.homeGoals} : ${eventData.result.awayGoals}`;
-        const nameString =
-          (eventData.homeTeam ? eventData.homeTeam.officialName : '') +
-          ' - ' +
-          (eventData.awayTeam ? eventData.awayTeam.officialName : '');
-
-        return {
-          id: uuidv4(),
-          name: nameString,
-          description: eventData.originCompetitionName + ' - ' + eventData.season || '',
-          status: eventData.status || '',
-          result: resultString || '',
-          date: eventData.dateVenue,
-          time: eventData.timeVenueUTC,
-        };
-      });
-
-      this.events = eventsFromJSON;
-    },
-    loadEventsFromLocalStorage() {
-      try {
-        const savedEvents = localStorage.getItem('events');
-
-        if (savedEvents) {
-          const parsedEvents = JSON.parse(savedEvents);
-
-          this.events = this.events.concat(parsedEvents);
-        }
-      } catch (error) {
-        console.error('Error loading events from local storage:', error);
-      }
-    },
-
     filterAndSortEvents() {
       const eventDateToString = getFormattedDate(this.date);
 
-      return this.sortEvents(this.events.filter((event) => event.date === eventDateToString));
+      return sortEventsByTime(this.events.filter((event) => event.date === eventDateToString));
     },
-    isCurrentDate(checkDate: Date) {
-      const currentDate = new Date();
 
-      currentDate.setHours(0, 0, 0, 0);
-
-      const itemDate = new Date(checkDate);
-
-      itemDate.setHours(0, 0, 0, 0);
-
-      return currentDate.toISOString().split('T')[0] === itemDate.toISOString().split('T')[0];
-    },
-    sortEvents(events: SportEvent[]) {
-      return events.sort((a, b) => {
-        const timeA = a.time.split(':');
-        const timeB = b.time.split(':');
-
-        const hoursA = parseInt(timeA[0]);
-        const minutesA = parseInt(timeA[1]);
-        const hoursB = parseInt(timeB[0]);
-        const minutesB = parseInt(timeB[1]);
-
-        if (hoursA === hoursB) {
-          return minutesA - minutesB;
-        }
-
-        return hoursA - hoursB;
-      });
-    },
     updateRemainingEventsCount(filteredEvents: SportEvent[]) {
       this.remainingEventsCount = filteredEvents.length - 2;
     },

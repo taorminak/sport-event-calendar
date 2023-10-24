@@ -15,12 +15,14 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from 'vue';
+import { defineComponent } from 'vue';
 import { SportEvent } from '@/types/interfaces/sportEvent';
-import SportEventsData from '@/data/sportData.json';
-import { v4 as uuidv4 } from 'uuid';
+import {
+  loadEventsFromLocalStorage,
+  fetchAndSaveEvents,
+  sortEventsByDateAndTime,
+} from '@/helpers/data-handling/dataHandling';
 
-const loaded = ref(false);
 export default defineComponent({
   data() {
     return {
@@ -36,69 +38,14 @@ export default defineComponent({
     },
   },
   mounted() {
-    this.fetchAndSaveEvents();
-    this.loadEventsFromLocalStorage();
+    fetchAndSaveEvents.call(this);
+    loadEventsFromLocalStorage.call(this);
   },
   methods: {
-    fetchAndSaveEvents() {
-      loaded.value = true;
+    sortEvents(events: SportEvent[]): SportEvent[] {
+      sortEventsByDateAndTime(events);
 
-      const eventsFromJSON = SportEventsData.data.map((eventData) => {
-        const resultString = `${eventData.result.homeGoals} : ${eventData.result.awayGoals}`;
-        const nameString =
-          (eventData.homeTeam ? eventData.homeTeam.officialName : '') +
-          ' - ' +
-          (eventData.awayTeam ? eventData.awayTeam.officialName : '');
-
-        return {
-          id: uuidv4(),
-          name: nameString,
-          description: eventData.originCompetitionName + ' - ' + eventData.season || '',
-          status: eventData.status || '',
-          result: resultString || '',
-          date: eventData.dateVenue,
-          time: eventData.timeVenueUTC,
-        };
-      });
-
-      this.events = eventsFromJSON;
-    },
-    loadEventsFromLocalStorage() {
-      try {
-        const savedEvents = localStorage.getItem('events');
-
-        if (savedEvents) {
-          const parsedEvents = JSON.parse(savedEvents);
-
-          this.events = this.events.concat(parsedEvents);
-        }
-      } catch (error) {
-        console.error('Error loading events from local storage:', error);
-      }
-    },
-    sortEvents(events: SportEvent[]) {
-      return events.sort((a, b) => {
-        const dateA = new Date(a.date);
-        const dateB = new Date(b.date);
-
-        if (dateA.getTime() !== dateB.getTime()) {
-          return dateA.getTime() - dateB.getTime();
-        }
-
-        const timeA = a.time.split(':');
-        const timeB = b.time.split(':');
-
-        const hoursA = parseInt(timeA[0]);
-        const minutesA = parseInt(timeA[1]);
-        const hoursB = parseInt(timeB[0]);
-        const minutesB = parseInt(timeB[1]);
-
-        if (hoursA === hoursB) {
-          return minutesA - minutesB;
-        }
-
-        return hoursA - hoursB;
-      });
+      return events;
     },
   },
 });
