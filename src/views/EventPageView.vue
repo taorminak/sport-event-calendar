@@ -3,7 +3,7 @@
     <h1 class="header__title">New Sport Event</h1>
     <div>
       <button @click="goToHome()" class="header__button">Go to Calendar</button>
-    <button @click="goToAllEvents" class="header__button">Show All Events</button>
+      <button @click="goToAllEvents" class="header__button">Show All Events</button>
     </div>
   </div>
   <NewSportEvent />

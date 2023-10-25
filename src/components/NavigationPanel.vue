@@ -73,7 +73,6 @@ export default defineComponent({
     margin: 0 10px;
     color: #c9c8d0;
   }
-
   .calendar__nav-button:focus {
     outline: none;
   }

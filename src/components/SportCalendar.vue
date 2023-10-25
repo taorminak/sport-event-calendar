@@ -27,12 +27,12 @@
 import { defineComponent } from 'vue';
 import NavigationPanel from './NavigationPanel.vue';
 import CalendarItem from './CalendarItem.vue';
-import { calculateDaysInMonth, daysOfWeek } from '@/helpers/date-helpers/dateHelpers';
+import { calculateDaysInMonth, getDaysOfWeek } from '@/helpers/date-helpers/dateHelpers';
 import { DAYS_IN_WEEK } from '@/constants';
 
 export default defineComponent({
   created() {
-    this.daysOfWeek = daysOfWeek();
+    this.daysOfWeek = getDaysOfWeek();
   },
   data() {
     return {

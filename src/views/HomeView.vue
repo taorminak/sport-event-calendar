@@ -30,5 +30,3 @@ const goToAllEvents = () => {
   props.navigateTo?.(PageNames.AllEvents);
 };
 </script>
-
-

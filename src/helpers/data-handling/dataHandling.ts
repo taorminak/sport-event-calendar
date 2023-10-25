@@ -2,40 +2,45 @@ import SportEventsData from '@/data/sportData.json';
 import { SportEvent } from '@/types/interfaces/sportEvent';
 import { v4 as uuidv4 } from 'uuid';
 
-export function loadEventsFromLocalStorage(this: any) {
+export function loadEventsFromLocalStorage() {
   try {
     const savedEvents = localStorage.getItem('events');
 
     if (savedEvents) {
       const parsedEvents = JSON.parse(savedEvents);
 
-      this.events = this.events.concat(parsedEvents);
+      return parsedEvents;
     }
   } catch (error) {
     console.error('Error loading events from local storage:', error);
   }
+
+  return null;
 }
 
-export function fetchAndSaveEvents(this: any) {
+export function fetchAndSaveEvents() {
   const eventsFromJSON = SportEventsData.data.map((eventData) => {
     const resultString = `${eventData.result.homeGoals} : ${eventData.result.awayGoals}`;
     const nameString =
       (eventData.homeTeam ? eventData.homeTeam.officialName : '') +
       ' - ' +
       (eventData.awayTeam ? eventData.awayTeam.officialName : '');
+    const descriptionString = eventData.originCompetitionName + ' - ' + eventData.season;
+    const [hours, minutes] = eventData.timeVenueUTC.split(':').slice(0, 2);
+    const timeString = `${hours}:${minutes}`;
 
     return {
       id: uuidv4(),
       name: nameString,
-      description: eventData.originCompetitionName + ' - ' + eventData.season || '',
+      description: descriptionString || '',
       status: eventData.status || '',
       result: resultString || '',
-      date: eventData.dateVenue,
-      time: eventData.timeVenueUTC,
+      date: eventData.dateVenue || '',
+      time: timeString || '',
     };
   });
 
-  this.events = eventsFromJSON;
+  return eventsFromJSON;
 }
 
 function getTimeDifference(timeA: string, timeB: string): number {

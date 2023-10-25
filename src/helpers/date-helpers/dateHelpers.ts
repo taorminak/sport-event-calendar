@@ -9,16 +9,18 @@ export function getFormattedDate(date: Date): string {
   return `${year}-${month}-${day}`;
 }
 
-export function isCurrentDate(checkDate: Date):boolean {
+export function isCurrentDate(checkDate: Date): boolean {
   const currentDate = removeTimeFromDate(new Date());
   const itemDate = removeTimeFromDate(checkDate);
 
   return areDatesEqual(currentDate, itemDate);
 }
 
-function removeTimeFromDate(date: Date):Date {
+function removeTimeFromDate(date: Date): Date {
   const dateWithoutTime = new Date(date);
+
   dateWithoutTime.setHours(0, 0, 0, 0);
+
   return dateWithoutTime;
 }
 
@@ -50,7 +52,7 @@ export function calculateDaysInMonth(month: number, year: number): (string | Dat
   return daysOfMonth;
 }
 
-export function daysOfWeek(): string[] {
+export function getDaysOfWeek(): string[] {
   const daysOfWeek = [];
   const startDate = new Date('2023-10-16');
 

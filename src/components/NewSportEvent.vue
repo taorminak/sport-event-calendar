@@ -29,78 +29,88 @@
     </div>
     <div class="new-event__buttons">
       <button class="new-event__button-save" type="submit" :disabled="!areRequiredFieldsValid">Save</button>
-      <button class="new-event__button-cancel" @click="cancelEvent">Cancel</button>
+      <button class="new-event__button-cancel" @click="clearFormFields">Cancel</button>
     </div>
   </form>
 </template>
 
-<script setup lang="ts">
-import { ref, watchEffect } from 'vue';
+<script lang="ts">
+import { defineComponent } from 'vue';
 import state from '../state';
 import { v4 as uuidv4 } from 'uuid';
 import { SportEvent } from '@/types/interfaces/sportEvent';
+import { loadEventsFromLocalStorage } from '@/helpers/data-handling/dataHandling';
 
 //const store = useStore();
 
-const formData = ref({
-  id: '',
-  name: '',
-  description: '',
-  date: state.state.selectedDate || state.state.calendarDate,
-  time: '',
-  status: false,
-  result: '',
-});
-
-const areRequiredFieldsValid = ref(false);
-
-const checkRequiredFields = () => {
-  areRequiredFieldsValid.value =
-    formData.value.name !== '' && formData.value.date !== null && formData.value.time !== '';
-};
-
-const cancelEvent = () => {
-  (formData.value.id = ''), (formData.value.name = '');
-  formData.value.description = '';
-  formData.value.date = state.state.selectedDate || state.state.calendarDate;
-  formData.value.time = '';
-  formData.value.status = false;
-  formData.value.result = '';
-};
-
-const saveForm = () => {
-  checkRequiredFields();
-
-  if (areRequiredFieldsValid.value) {
-    const formModel = {
-      id: uuidv4(),
-      name: formData.value.name,
-      description: formData.value.description,
-      date: formData.value.date.toString(),
-      time: formData.value.time,
-      status: formData.value.status,
-      result: formData.value.result,
+export default defineComponent({
+  data() {
+    return {
+      formData: {
+        id: '',
+        name: '',
+        description: '',
+        date: state.state.selectedDate,
+        time: '',
+        status: false,
+        result: '',
+      },
+      areRequiredFieldsValid: false,
     };
+  },
+  methods: {
+    checkRequiredFields() {
+      this.areRequiredFieldsValid =
+        this.formData.name !== '' && this.formData.date !== null && this.formData.time !== '';
+    },
+    clearFormFields() {
+      this.formData.id = '';
+      this.formData.name = '';
+      this.formData.description = '';
+      this.formData.date = state.state.selectedDate || '';
+      this.formData.time = '';
+      this.formData.status = false;
+      this.formData.result = '';
+    },
+    saveForm() {
+      this.checkRequiredFields();
 
-    //store.commit('events/addEvent', formModel);
-    saveEventToLocalStorage(formModel);
-    cancelEvent();
-  } else {
-    console.error('Form is not valid.');
-  }
-};
+      if (this.areRequiredFieldsValid) {
+        const formModel = {
+          id: uuidv4(),
+          name: this.formData.name,
+          description: this.formData.description,
+          date: this.formData.date.toString(),
+          time: this.formData.time,
+          status: this.formData.status,
+          result: this.formData.result,
+        };
 
-const saveEventToLocalStorage = (formModel: SportEvent) => {
-  const savedEvents = localStorage.getItem('events');
-  const events = savedEvents ? JSON.parse(savedEvents) : [];
+        this.saveEventToLocalStorage(formModel);
+        this.clearFormFields();
+      } else {
+        console.error('Form is not valid.');
+      }
+    },
+    saveEventToLocalStorage(formModel: SportEvent) {
+      try {
+        const savedEvents = loadEventsFromLocalStorage() || [];
 
-  events.push(formModel);
- 
-  localStorage.setItem('events', JSON.stringify(events));
-};
-
-watchEffect(() => {
-  checkRequiredFields();
+        savedEvents.push(formModel);
+        localStorage.setItem('events', JSON.stringify(savedEvents));
+      } catch (error) {
+        console.error('Error saving event to local storage:', error);
+      }
+    },
+  },
+  watch: {
+    formData: {
+      deep: true,
+      handler() {
+        this.checkRequiredFields();
+      },
+    },
+  },
 });
 </script>
 

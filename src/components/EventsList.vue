@@ -37,9 +37,17 @@ export default defineComponent({
       return sorted;
     },
   },
-  mounted() {
-    fetchAndSaveEvents.call(this);
-    loadEventsFromLocalStorage.call(this);
+  async mounted() {
+    const fetchedEvents = fetchAndSaveEvents();
+    const loadedEventsLocalStorage = await loadEventsFromLocalStorage();
+
+    if (fetchedEvents) {
+      this.events = this.events.concat(fetchedEvents);
+    }
+
+    if (loadedEventsLocalStorage) {
+      this.events = this.events.concat(loadedEventsLocalStorage);
+    }
   },
   methods: {
     sortEvents(events: SportEvent[]): SportEvent[] {
@@ -67,6 +75,7 @@ export default defineComponent({
     display: flex;
     justify-content: space-between;
     width: 100%;
+    border: 0.5px solid #ac9dc5;
   }
 
   .event-name {

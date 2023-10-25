@@ -26,5 +26,3 @@ const goToHome = () => {
   props.navigateTo?.(PageNames.Home);
 };
 </script>
-
-

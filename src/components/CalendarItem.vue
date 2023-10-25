@@ -20,8 +20,9 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
-import state from '../state';
+import { defineComponent, computed } from 'vue';
+import state from '@/state';
+import { PageNames } from '@/types/enums/pageNames';
 import { SportEvent } from '@/types/interfaces/sportEvent';
 import { getFormattedDate, isCurrentDate } from '@/helpers/date-helpers/dateHelpers';
 import { loadEventsFromLocalStorage, fetchAndSaveEvents, sortEventsByTime } from '@/helpers/data-handling/dataHandling';
@@ -35,16 +36,27 @@ export default defineComponent({
       loaded: false,
     };
   },
-  mounted() {
-    fetchAndSaveEvents.call(this);
-    loadEventsFromLocalStorage.call(this);
+  async mounted() {
+    const fetchedEvents = fetchAndSaveEvents();
+    const loadedEventsLocalStorage = await loadEventsFromLocalStorage();
+
+    if (fetchedEvents) {
+      this.events = this.events.concat(fetchedEvents);
+    }
+
+    if (loadedEventsLocalStorage) {
+      this.events = this.events.concat(loadedEventsLocalStorage);
+    }
   },
   setup(props) {
-    const localDate = props.date;
-    const goToEvent = () => {
-      props.navigateTo?.('eventPage');
+    const localDate = computed(() => {
+      return new Date(props.date);
+    });
 
-      const selectedDay = new Date(localDate);
+    const goToEvent = () => {
+      props.navigateTo?.(PageNames.EventPage);
+
+      const selectedDay = new Date(localDate.value);
 
       const formattedDate = getFormattedDate(selectedDay);
 
@@ -59,6 +71,7 @@ export default defineComponent({
       goToEvent,
     };
   },
+
   computed: {
     itemClasses() {
       return isCurrentDate(this.date) ? 'calendar__current-date' : '';
