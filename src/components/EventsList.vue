@@ -117,4 +117,24 @@ $primaryHoverColor: #927faf;
     text-align: left;
   }
 }
+
+@media (max-width: 1023px) {
+  .event-table {
+    font-size: 16px;
+
+    .event-time,
+    .event-date,
+    .event-name {
+      border: 0.5px solid #9788af;
+      text-align: center;
+      padding: 3px;
+    }
+  }
+}
+
+@media (max-width: 767px) {
+  .event-table {
+    font-size: 14px;
+  }
+}
 </style>

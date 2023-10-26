@@ -95,6 +95,7 @@ $primaryHoverColor: #927faf;
 .modal {
   display: flex;
   position: fixed;
+  font-size: 18px;
   top: 0;
   left: 0;
   width: 100%;
@@ -109,11 +110,12 @@ $primaryHoverColor: #927faf;
     padding: 40px;
     width: 40vw;
     min-height: 40vh;
-    max-width: 80%;
+    max-width: 90%;
     text-align: center;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    border-radius: 5px;
   }
 
   &__input {
@@ -127,13 +129,13 @@ $primaryHoverColor: #927faf;
   &__text {
     font-size: 18px;
     color: #333;
-    padding: 1px;
+    padding: 5px;
     margin-bottom: 10px;
     text-align: left;
   }
 
   &__button {
-    background-color: $primaryColor;
+    background-color: #dc3545;
     min-width: 100px;
     color: white;
     border: none;
@@ -141,19 +143,44 @@ $primaryHoverColor: #927faf;
     border-radius: 4px;
     cursor: pointer;
     font-size: 16px;
+    margin: 5px;
     margin-right: 10px;
     transition: background-color 0.2s;
 
     &:nth-child(2) {
-      background-color: #6e6c78;
+      background-color: $primaryColor;
     }
 
     &:nth-child(1) {
-      background-color: #dc3545;
+      background-color: #6e6c78;
     }
 
-    &:hover {
-      background-color: $primaryHoverColor;
+    @media (hover: hover) {
+      &:hover {
+        background-color: $primaryHoverColor;
+      }
+    }
+  }
+  @media (max-width: 1023px) {
+    &__title {
+      font-size: 22px;
+      margin: 8px;
+      line-height: 1.4;
+    }
+
+    &__content {
+      width: 80vw;
+    }
+  }
+
+  @media (max-width: 767px) {
+    &__content {
+      width: 90vw;
+    }
+
+    &__button {
+      min-width: 80px;
+      font-size: 14px;
     }
   }
 }

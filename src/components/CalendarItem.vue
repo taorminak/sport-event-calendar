@@ -128,10 +128,10 @@ $primaryHoverColor: #927faf;
 
 .calendar__item-container {
   padding: 5px;
+  min-height: 100px;
   margin: 0;
   border-radius: 5px;
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
-  min-height: 100px;
 
   .calendar__item-info {
     display: flex;
@@ -187,8 +187,10 @@ $primaryHoverColor: #927faf;
         text-decoration: none;
         cursor: pointer;
 
-        &:hover {
-          color: $primaryColor;
+        @media (hover: hover) {
+          &:hover {
+            background-color: $primaryHoverColor;
+          }
         }
       }
     }
@@ -199,6 +201,44 @@ $primaryHoverColor: #927faf;
       font-size: 10px;
       margin: 0;
       padding: 0;
+    }
+  }
+
+  @media (max-width: 1023px) {
+    .calendar__item-container {
+      padding: 3px;
+      min-height: 80px;
+    }
+  }
+
+  @media (max-width: 767px) {
+    .calendar__item-container {
+      padding: 3px;
+    }
+
+    .calendar__item-info {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      align-items: center;
+      min-height: 75px;
+      margin: 5px;
+    }
+
+    .calendar__item-events {
+      display: none;
+    }
+
+    .calendar__item-info {
+      .calendar__current-date {
+        height: 15px;
+        width: 15px;
+      }
+
+      .calendar__item-date {
+        height: 20px;
+        width: 20px;
+      }
     }
   }
 }

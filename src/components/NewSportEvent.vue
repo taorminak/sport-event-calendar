@@ -209,9 +209,11 @@ export default defineComponent({
     border-radius: 5px;
     transition: background-color 0.3s;
 
-    &:hover {
-      background-color: #27263d;
-      color: #fff;
+    @media (hover: hover) {
+      &:hover {
+        background-color: #27263d;
+        color: #fff;
+      }
     }
 
     &:disabled {
@@ -223,10 +225,25 @@ export default defineComponent({
 
   .new-event__button-save {
     background-color: #ac9dc5;
+    margin: 5px;
   }
 
   .new-event__button-cancel {
     background-color: #a5a4ab;
+    margin: 5px;
+  }
+}
+
+@media (max-width: 1023px) {
+  .new-event__form {
+    width: 90vw;
+  }
+}
+
+@media (max-width: 767px) {
+  .new-event__buttons {
+    justify-content: center;
+    align-items: center;
   }
 }
 </style>

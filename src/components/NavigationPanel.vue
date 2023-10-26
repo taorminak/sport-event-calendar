@@ -76,5 +76,22 @@ export default defineComponent({
   .calendar__nav-button:focus {
     outline: none;
   }
+
+  @media (max-width: 1023px) {
+    &__content {
+      width: 80vw;
+    }
+  }
+
+  @media (max-width: 767px) {
+    &__content {
+      width: 90vw;
+    }
+
+    &__button {
+      min-width: 80px;
+      font-size: 14px;
+    }
+  }
 }
 </style>

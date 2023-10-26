@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="page-container">
     <component :is="currentPageComponent" :navigateTo="navigateTo"></component>
   </div>
 </template>

@@ -1,13 +1,12 @@
 <template>
-  <div class="header__container">
-    <HeaderButtons
-      pageTitle="2023 Sport Calendar"
-      firstButtonLabel="Go to Calendar"
-      secondButtonLabel="Add New Event &plus;"
-      :goToFirstButton="goToHome"
-      :goToSecondButton="goToEvent"
-    />
-  </div>
+  <HeaderButtons
+    pageTitle="2023 Sport Calendar"
+    firstButtonLabel="Go to Calendar"
+    secondButtonLabel="Add New Event &plus;"
+    :goToFirstButton="goToHome"
+    :goToSecondButton="goToEvent"
+  />
+
   <EventsList />
 </template>
 

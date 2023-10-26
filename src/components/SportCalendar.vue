@@ -135,4 +135,21 @@ export default defineComponent({
     }
   }
 }
+
+@media (max-width: 1023px) {
+  .calendar {
+    width: 88vw;
+  }
+}
+
+@media (max-width: 767px) {
+  .calendar {
+    width: 92vw;
+
+    .container__item-day {
+      font-size: 12px;
+      padding: 1px;
+    }
+  }
+}
 </style>
