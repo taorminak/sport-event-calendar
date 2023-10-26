@@ -45,6 +45,9 @@ export default defineComponent({
   },
   props: ['date', 'navigateTo'],
   computed: {
+    isLightTheme() {
+      return this.$store.state.theme.isLightTheme;
+    },
     daysInMonth() {
       const currentDay = this.date;
       const month = currentDay?.getMonth() || 0;
@@ -57,11 +60,13 @@ export default defineComponent({
     getDayClass(index: number, part: string): string {
       const isWeekend = index % DAYS_IN_WEEK === 5 || index % DAYS_IN_WEEK === 6;
 
+      const themeClass = this.isLightTheme ? 'light' : 'dark';
+
       if (isWeekend) {
-        return part === 'daysInMonth' ? 'item-weekend' : 'item-weekend-weekday';
+        return part === 'daysInMonth' ? `item-weekend ${themeClass}` : `item-weekend-weekday ${themeClass}`;
       }
 
-      return '';
+      return themeClass;
     },
   },
 });
@@ -90,10 +95,28 @@ export default defineComponent({
     text-align: center;
     background-color: #f0efef;
     color: #3b3a3d;
+
+    &.light {
+      background-color: #f0efef;
+      color: #3b3a3d;
+    }
+
+    &.dark {
+      background-color: #aba6bc;
+      color: #3b3a3d;
+    }
   }
 
   .item-weekday {
-    background-color: #ffffff;
+    &.light {
+      background-color: #ffffff;
+      color: #3b3a3d;
+    }
+
+    &.dark {
+      background-color: #27263d;
+      color: #ac9dc5;
+    }
   }
 
   .item-weekend-weekday {
@@ -101,7 +124,15 @@ export default defineComponent({
   }
 
   .item-weekend {
-    background-color: #e8e7e7;
+    &.light {
+      background-color: #e8e7e7;
+      color: #3b3a3d;
+    }
+
+    &.dark {
+      background-color: #a39db9;
+      color: #3b3a3d;
+    }
   }
 }
 </style>

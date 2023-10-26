@@ -90,8 +90,8 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
-$primaryColor: #ac9dc5;
-$primaryHoverColor: #9886b6;
+$primaryColor: #8776a2;
+$primaryHoverColor: #927faf;
 .modal {
   display: flex;
   position: fixed;

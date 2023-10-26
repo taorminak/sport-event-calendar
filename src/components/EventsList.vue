@@ -1,12 +1,12 @@
 <template>
   <div class="event-table">
-    <div class="event-row event-table-header">
+    <div :class="['event-row', 'event-table-header', themeClass]">
       <div class="event-date">Date</div>
       <div class="event-time">Time</div>
       <div class="event-name">Name of event</div>
     </div>
 
-    <div v-for="event in sortedEvents" :key="event.id" class="event-row">
+    <div v-for="event in sortedEvents" :key="event.id" :class="['event-row', themeClass]">
       <div class="event-date">{{ event.date }}</div>
       <div class="event-time">{{ event.time }}</div>
       <a class="event-name" :name="event.name" @click.prevent="openModal(event)">{{ event.name }}</a>
@@ -34,11 +34,17 @@ export default defineComponent({
     };
   },
   computed: {
+    isLightTheme() {
+      return this.$store.state.theme.isLightTheme;
+    },
     sortedEvents(): SportEvent[] {
       const events = this.$store.state.events.events;
       const sorted = this.sortEvents(events);
 
       return sorted;
+    },
+    themeClass() {
+      return this.isLightTheme ? 'light' : 'dark';
     },
   },
   methods: {
@@ -59,8 +65,8 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
-$primaryColor: #ac9dc5;
-$primaryHoverColor: #9886b6;
+$primaryColor: #8776a2;
+$primaryHoverColor: #927faf;
 .event-table {
   display: flex;
   flex-direction: column;
@@ -70,13 +76,22 @@ $primaryHoverColor: #9886b6;
   justify-content: space-between;
   padding: 10px;
   margin-top: 5px;
-  background-color: #f0f0f0;
 
   .event-row {
     display: flex;
     justify-content: space-between;
-    width: 100%;
-    border: 0.5px solid #ac9dc5;
+    width: 80vw;
+    padding: 8px;
+    border: 0.5px solid #9788af;
+
+    &.light {
+      background-color: #f0f0f0;
+    }
+
+    &.dark {
+      background-color: #bdb2cf;
+      color: #27263d;
+    }
   }
 
   .event-name {

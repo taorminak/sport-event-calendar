@@ -1,30 +1,59 @@
 <template>
-  <form id="event_form" class="new-event__form" ref="form" @submit.prevent="saveForm">
+  <form id="event_form" class="new-event__form" :class="[themeClass]" ref="form" @submit.prevent="saveForm">
     <div class="new-event__group">
       <div class="new-event__field">
         <label for="eventName" class="new-event__label">Name of event (required):</label>
-        <input type="text" id="eventName" class="new-event__input" v-model="formData.name" required />
+        <input
+          type="text"
+          id="eventName"
+          class="new-event__input"
+          :class="[themeClass]"
+          v-model="formData.name"
+          required
+        />
       </div>
       <div class="new-event__field">
         <label for="eventDescription" class="new-event__label">Description:</label>
-        <textarea id="eventDescription" class="new-event__input" v-model="formData.description" />
+        <textarea id="eventDescription" class="new-event__input" :class="[themeClass]" v-model="formData.description" />
       </div>
       <div class="new-event__field">
         <label for="eventDate" class="new-event__label">Date (required):</label>
-        <input type="date" id="eventDate" class="new-event__input" v-model="formData.date" required />
+        <input
+          type="date"
+          id="eventDate"
+          class="new-event__input"
+          :class="[themeClass]"
+          v-model="formData.date"
+          required
+        />
       </div>
       <div class="new-event__field">
         <label for="eventTime" class="new-event__label">Time (required):</label>
-        <input type="time" id="eventTime" class="new-event__input" v-model="formData.time" required />
+        <input
+          type="time"
+          id="eventTime"
+          class="new-event__input"
+          :class="[themeClass]"
+          v-model="formData.time"
+          required
+        />
       </div>
       <div class="new-event__field">
         <label for="eventStatus" class="new-event__label"
-          >Status: <input type="checkbox" id="eventStatus" class="new-event__status" v-model="formData.status" /> Played
+          >Status:
+          <input
+            type="checkbox"
+            id="eventStatus"
+            class="new-event__status"
+            :class="[themeClass]"
+            v-model="formData.status"
+          />
+          Played
         </label>
       </div>
       <div class="new-event__field">
         <label for="eventResult" class="new-event__label">Result:</label>
-        <input type="text" id="eventResult" class="new-event__input" v-model="formData.result" />
+        <input type="text" id="eventResult" class="new-event__input" :class="[themeClass]" v-model="formData.result" />
       </div>
     </div>
     <div class="new-event__buttons">
@@ -59,6 +88,14 @@ export default defineComponent({
       },
       areRequiredFieldsValid: false,
     };
+  },
+  computed: {
+    isLightTheme() {
+      return this.$store.state.theme.isLightTheme;
+    },
+    themeClass() {
+      return this.isLightTheme ? 'light' : 'dark';
+    },
   },
   methods: {
     checkRequiredFields() {
@@ -125,7 +162,15 @@ export default defineComponent({
   padding: 20px;
   border: 1px solid #ccc;
   border-radius: 5px;
-  background-color: #f5f5f5;
+
+  &.light {
+    background-color: #f5f5f5;
+  }
+
+  &.dark {
+    background-color: #bdb2cf;
+    color: #27263d;
+  }
 }
 
 .new-event__group {
@@ -142,6 +187,10 @@ export default defineComponent({
   padding: 5px;
   border: 1px solid #ccc;
   border-radius: 3px;
+
+  &.dark {
+    background-color: #dcdce7;
+  }
 }
 
 .new-event__buttons {

@@ -123,8 +123,8 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
-$primaryColor: #ac9dc5;
-$primaryHoverColor: #9886b6;
+$primaryColor: #8776a2;
+$primaryHoverColor: #927faf;
 
 .calendar__item-container {
   padding: 5px;
@@ -140,7 +140,7 @@ $primaryHoverColor: #9886b6;
 
     .calendar__current-date {
       background-color: red;
-      color: #ffffff;
+      color: #dcdce7;
       border-radius: 50%;
       display: flex;
       justify-content: center;
