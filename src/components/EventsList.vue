@@ -53,11 +53,11 @@ export default defineComponent({
 
       return events;
     },
-    openModal(event: SportEvent) {
+    openModal(event: SportEvent): void {
       this.showModal = true;
       this.selectedEvent = event;
     },
-    closeModal() {
+    closeModal(): void {
       this.showModal = false;
     },
   },

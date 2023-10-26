@@ -2,13 +2,13 @@ import SportEventsData from '@/data/sportData.json';
 import { SportEvent } from '@/types/interfaces/sportEvent';
 import { v4 as uuidv4 } from 'uuid';
 
-export function fetchAndSaveEvents() {
+export function fetchAndSaveEvents(): SportEvent[] {
   const eventsFromJSON = SportEventsData.data.map((eventData) => {
     const resultString = `${eventData.result.homeGoals} : ${eventData.result.awayGoals}`;
     const nameString =
-      (eventData.homeTeam ? eventData.homeTeam.officialName : '') +
+      (eventData.homeTeam ? eventData.homeTeam.officialName : 'Unknown') +
       ' - ' +
-      (eventData.awayTeam ? eventData.awayTeam.officialName : '');
+      (eventData.awayTeam ? eventData.awayTeam.officialName : 'Unknown');
     const descriptionString = eventData.originCompetitionName + ' - ' + eventData.season;
     const [hours, minutes] = eventData.timeVenueUTC.split(':').slice(0, 2);
     const timeString = `${hours}:${minutes}`;
@@ -16,11 +16,11 @@ export function fetchAndSaveEvents() {
     return {
       id: uuidv4(),
       name: nameString,
-      description: descriptionString || '',
-      status: eventData.status || '',
-      result: resultString || '',
-      date: eventData.dateVenue || '',
-      time: timeString || '',
+      description: descriptionString || 'Unknown',
+      status: eventData.status || 'Unknown',
+      result: resultString || 'Unknown',
+      date: eventData.dateVenue || 'Unknown',
+      time: timeString || 'Unknown',
     };
   });
 
@@ -53,10 +53,10 @@ function compareEventsByDate(a: SportEvent, b: SportEvent): number {
   return compareEventsByTime(a, b);
 }
 
-export function sortEventsByTime(events: SportEvent[]) {
+export function sortEventsByTime(events: SportEvent[]): SportEvent[] {
   return events.sort(compareEventsByTime);
 }
 
-export function sortEventsByDateAndTime(events: SportEvent[]) {
+export function sortEventsByDateAndTime(events: SportEvent[]): SportEvent[] {
   return events.sort(compareEventsByDate);
 }

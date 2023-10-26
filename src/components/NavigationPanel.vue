@@ -30,22 +30,22 @@ export default defineComponent({
     },
   },
   methods: {
-    changeMonth(offset: number) {
+    changeMonth(offset: number): void {
       state.state.updateCalendarDate(offset, TimeUnits.Month);
     },
-    changeYear(offset: number) {
+    changeYear(offset: number): void {
       state.state.updateCalendarDate(offset, TimeUnits.Year);
     },
-    incrementMonth() {
+    incrementMonth(): void {
       this.changeMonth(1);
     },
-    decrementMonth() {
+    decrementMonth(): void {
       this.changeMonth(-1);
     },
-    decrementYear() {
+    decrementYear(): void {
       this.changeYear(-1);
     },
-    incrementYear() {
+    incrementYear(): void {
       this.changeYear(1);
     },
   },

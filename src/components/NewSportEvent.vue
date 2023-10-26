@@ -98,11 +98,11 @@ export default defineComponent({
     },
   },
   methods: {
-    checkRequiredFields() {
+    checkRequiredFields(): void {
       this.areRequiredFieldsValid =
         this.formData.name !== '' && this.formData.date !== null && this.formData.time !== '';
     },
-    clearFormFields() {
+    clearFormFields(): void {
       this.formData.id = '';
       this.formData.name = '';
       this.formData.description = '';
@@ -111,7 +111,7 @@ export default defineComponent({
       this.formData.status = false;
       this.formData.result = '';
     },
-    saveForm() {
+    saveForm(): void {
       this.checkRequiredFields();
 
       if (this.areRequiredFieldsValid) {
@@ -131,7 +131,7 @@ export default defineComponent({
         console.error('Form is not valid.');
       }
     },
-    saveEventToLocalStorage(formModel: SportEvent) {
+    saveEventToLocalStorage(formModel: SportEvent): void {
       try {
         const savedEvents = loadEventsFromLocalStorage() || [];
 

@@ -126,6 +126,12 @@ $primaryHoverColor: #927faf;
     width: 100%;
   }
 
+  &__title {
+    font-size: 24px;
+    margin: 8px;
+    line-height: 1.4;
+  }
+
   &__text {
     font-size: 18px;
     color: #333;
@@ -163,7 +169,7 @@ $primaryHoverColor: #927faf;
   }
   @media (max-width: 1023px) {
     &__title {
-      font-size: 22px;
+      font-size: 20px;
       margin: 8px;
       line-height: 1.4;
     }

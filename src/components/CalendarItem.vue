@@ -46,7 +46,7 @@ export default defineComponent({
   },
   async mounted() {
     const fetchedEvents = fetchAndSaveEvents();
-    const loadedEventsLocalStorage = await loadEventsFromLocalStorage();
+    const loadedEventsLocalStorage = loadEventsFromLocalStorage();
 
     if (fetchedEvents) {
       this.events = this.events.concat(fetchedEvents);
@@ -99,23 +99,23 @@ export default defineComponent({
     },
   },
   methods: {
-    filterAndSortEvents(events: SportEvent[]) {
+    filterAndSortEvents(events: SportEvent[]): SportEvent[] {
       const eventDateToString = getFormattedDate(this.date);
 
       return sortEventsByTime(events.filter((event: SportEvent) => event.date === eventDateToString));
     },
 
-    updateRemainingEventsCount(filteredEvents: SportEvent[]) {
+    updateRemainingEventsCount(filteredEvents: SportEvent[]): void {
       this.remainingEventsCount = filteredEvents.length - 2;
     },
-    truncateEventName(name: string) {
+    truncateEventName(name: string): string {
       return name.length > 15 ? name.substring(0, 15) + '...' : name;
     },
-    openModal(event: SportEvent) {
+    openModal(event: SportEvent): void {
       this.showModal = true;
       this.selectedEvent = event;
     },
-    closeModal() {
+    closeModal(): void {
       this.showModal = false;
     },
   },
@@ -175,21 +175,22 @@ $primaryHoverColor: #927faf;
     margin: 0;
 
     .calendar__item-event {
-      background-color: #f3f3f3;
-      border: 1px solid #ddd;
+      background-color: #c7bed5;
       line-height: 0.9;
-      padding: 1px;
-      border-radius: 5px;
+      padding-top: 2px;
+      padding-bottom: 2px;
+      border-radius: 3px;
       font-size: 14px;
       text-align: left;
 
       a {
         text-decoration: none;
         cursor: pointer;
+        padding-left: 3px;
 
         @media (hover: hover) {
           &:hover {
-            background-color: $primaryHoverColor;
+            color: $primaryHoverColor;
           }
         }
       }
