@@ -41,8 +41,6 @@ import { v4 as uuidv4 } from 'uuid';
 import { SportEvent } from '@/types/interfaces/sportEvent';
 import { loadEventsFromLocalStorage } from '@/helpers/data-handling/dataHandling';
 
-//const store = useStore();
-
 export default defineComponent({
   data() {
     return {

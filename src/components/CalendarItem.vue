@@ -8,32 +8,39 @@
       <ul>
         <li class="calendar__item-event" v-for="event in filteredEvents" :key="event.id">
           <div>
-            <a :name="event.name">{{ truncateEventName(event.name) }}</a>
+            <a :name="event.name" @click.prevent="openModal(event)">{{ truncateEventName(event.name) }}</a>
           </div>
         </li>
         <div v-show="showEventsNumber" class="events-number">
           <a>{{ remainingEventsCount }} more...</a>
         </div>
       </ul>
+      <EventDetail v-if="showModal" :event="selectedEvent" @close="closeModal" />
     </div>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, computed } from 'vue';
 import state from '@/state';
+import { defineComponent, computed } from 'vue';
 import { PageNames } from '@/types/enums/pageNames';
 import { SportEvent } from '@/types/interfaces/sportEvent';
+import EventDetail from './EventDetail.vue';
 import { getFormattedDate, isCurrentDate } from '@/helpers/date-helpers/dateHelpers';
 import { loadEventsFromLocalStorage, fetchAndSaveEvents, sortEventsByTime } from '@/helpers/data-handling/dataHandling';
 
 export default defineComponent({
   props: ['date', 'navigateTo'],
+  components: {
+    EventDetail,
+  },
   data() {
     return {
       events: [] as SportEvent[],
       remainingEventsCount: 0,
       loaded: false,
+      showModal: false,
+      selectedEvent: {},
     };
   },
   async mounted() {
@@ -47,6 +54,8 @@ export default defineComponent({
     if (loadedEventsLocalStorage) {
       this.events = this.events.concat(loadedEventsLocalStorage);
     }
+
+    this.$store.commit('events/updateEvents', this.events);
   },
   setup(props) {
     const localDate = computed(() => {
@@ -99,6 +108,13 @@ export default defineComponent({
     },
     truncateEventName(name: string) {
       return name.length > 15 ? name.substring(0, 15) + '...' : name;
+    },
+    openModal(event: SportEvent) {
+      this.showModal = true;
+      this.selectedEvent = event;
+    },
+    closeModal() {
+      this.showModal = false;
     },
   },
 });
@@ -164,6 +180,15 @@ $primaryHoverColor: #9886b6;
       border-radius: 5px;
       font-size: 14px;
       text-align: left;
+
+      a {
+        text-decoration: none;
+        cursor: pointer;
+
+        &:hover {
+          color: $primaryColor;
+        }
+      }
     }
 
     .events-number {

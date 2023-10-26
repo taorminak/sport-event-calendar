@@ -1,25 +1,31 @@
 import { MutationTree } from 'vuex';
 import { EventState } from '@/types/interfaces/states';
-import { SportEvent } from '@/types/interfaces/sportEvent';
 
 const mutations: MutationTree<EventState> = {
-  addEvent(state, event) {
+  ADD_EVENT(state, event) {
     state.events.push(event);
     console.log(state.events);
-    saveEventToLocalStorage(state.events);
+  },
+  updateEvents(state, newEvents) {
+    state.events = newEvents;
+    console.log(state.events);
+  },
+  UPDATE_EVENT(state, updatedEvent) {
+    const index = state.events.findIndex((event) => event.id === updatedEvent.id);
+
+    if (index !== -1) {
+      state.events[index] = updatedEvent;
+    }
+    console.log(state.events);
+  },
+  DELETE_EVENT(state, eventId) {
+    const index = state.events.findIndex((event) => event.id === eventId);
+
+    if (index !== -1) {
+      state.events.splice(index, 1);
+    }
+    console.log(state.events);
   },
 };
 
 export default mutations;
-
-function saveEventToLocalStorage(events: SportEvent[]) {
-  try {
-    // Get existing events from local storage
-    const existingEvents = JSON.parse(localStorage.getItem('events') || '[]');
-    const updatedEvents = [...existingEvents, ...events];
-
-    localStorage.setItem('events', JSON.stringify(updatedEvents));
-  } catch (error) {
-    console.error('Error saving events to local storage:', error);
-  }
-}

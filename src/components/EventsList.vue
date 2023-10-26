@@ -9,14 +9,16 @@
     <div v-for="event in sortedEvents" :key="event.id" class="event-row">
       <div class="event-date">{{ event.date }}</div>
       <div class="event-time">{{ event.time }}</div>
-      <div class="event-name">{{ event.name }}</div>
+      <a class="event-name" :name="event.name" @click.prevent="openModal(event)">{{ event.name }}</a>
     </div>
+    <EventDetail v-if="showModal" :event="selectedEvent" @close="closeModal" />
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue';
 import { SportEvent } from '@/types/interfaces/sportEvent';
+import EventDetail from './EventDetail.vue';
 import {
   loadEventsFromLocalStorage,
   fetchAndSaveEvents,
@@ -24,10 +26,15 @@ import {
 } from '@/helpers/data-handling/dataHandling';
 
 export default defineComponent({
+  components: {
+    EventDetail,
+  },
   data() {
     return {
       events: [] as SportEvent[],
       loaded: false,
+      showModal: false,
+      selectedEvent: {},
     };
   },
   computed: {
@@ -55,11 +62,20 @@ export default defineComponent({
 
       return events;
     },
+    openModal(event: SportEvent) {
+      this.showModal = true;
+      this.selectedEvent = event;
+    },
+    closeModal() {
+      this.showModal = false;
+    },
   },
 });
 </script>
 
 <style lang="scss" scoped>
+$primaryColor: #ac9dc5;
+$primaryHoverColor: #9886b6;
 .event-table {
   display: flex;
   flex-direction: column;
@@ -81,6 +97,14 @@ export default defineComponent({
   .event-name {
     flex: 2;
     font-weight: bold;
+  }
+
+  a.event-name {
+    text-decoration: none;
+    cursor: pointer;
+    &:hover {
+      color: $primaryColor;
+    }
   }
 
   .event-time,
