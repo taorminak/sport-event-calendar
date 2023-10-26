@@ -1,10 +1,12 @@
 <template>
   <div class="header__container">
-    <h1 class="header__title">2023 Sport Calendar</h1>
-    <div>
-      <button @click="goToAllEvents" class="header__button">Show All Events</button>
-      <button @click="goToEvent" class="header__button">Add New Event &plus;</button>
-    </div>
+    <HeaderButtons
+      pageTitle="2023 Sport Calendar"
+      firstButtonLabel="Show All Events"
+      secondButtonLabel="Add New Event &plus;"
+      :goToFirstButton="goToAllEvents"
+      :goToSecondButton="goToEvent"
+    />
   </div>
   <main>
     <Calendar :date="state.state.calendarDate" :navigateTo="goToEvent" />
@@ -13,6 +15,7 @@
 
 <script setup lang="ts">
 import Calendar from '@/components/SportCalendar.vue';
+import HeaderButtons from '@/components/HeaderButtons.vue';
 import { defineProps } from 'vue';
 import state from '@/state';
 import { PageNames } from '@/types/enums/pageNames';

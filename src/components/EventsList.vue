@@ -77,6 +77,11 @@ $primaryHoverColor: #927faf;
   padding: 10px;
   margin-top: 5px;
 
+  .event-table-header {
+    font-size: large;
+    font-weight: bold;
+  }
+
   .event-row {
     display: flex;
     justify-content: space-between;
