@@ -19,11 +19,7 @@
 import { defineComponent } from 'vue';
 import { SportEvent } from '@/types/interfaces/sportEvent';
 import EventDetail from './EventDetail.vue';
-import {
-  loadEventsFromLocalStorage,
-  fetchAndSaveEvents,
-  sortEventsByDateAndTime,
-} from '@/helpers/data-handling/dataHandling';
+import { sortEventsByDateAndTime } from '@/helpers/data-handling/dataHandling';
 
 export default defineComponent({
   components: {
@@ -39,22 +35,11 @@ export default defineComponent({
   },
   computed: {
     sortedEvents(): SportEvent[] {
-      const sorted = this.sortEvents(this.events);
+      const events = this.$store.state.events.events;
+      const sorted = this.sortEvents(events);
 
       return sorted;
     },
-  },
-  async mounted() {
-    const fetchedEvents = fetchAndSaveEvents();
-    const loadedEventsLocalStorage = await loadEventsFromLocalStorage();
-
-    if (fetchedEvents) {
-      this.events = this.events.concat(fetchedEvents);
-    }
-
-    if (loadedEventsLocalStorage) {
-      this.events = this.events.concat(loadedEventsLocalStorage);
-    }
   },
   methods: {
     sortEvents(events: SportEvent[]): SportEvent[] {
@@ -96,7 +81,6 @@ $primaryHoverColor: #9886b6;
 
   .event-name {
     flex: 2;
-    font-weight: bold;
   }
 
   a.event-name {

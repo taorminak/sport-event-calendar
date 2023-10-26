@@ -6,7 +6,7 @@
           <input class="modal__input" v-model="editedEvent.name" />
         </template>
         <template v-else>
-          {{ event.name }}
+          {{ displayField(isEditing, editedEvent.name, event.name) }}
         </template>
       </h2>
       <p class="modal__description">
@@ -15,35 +15,17 @@
           <input class="modal__input" v-model="editedEvent.description" />
         </template>
         <template v-else>
-          {{ event.description }}
+          {{ displayField(isEditing, editedEvent.description, event.description) }}
         </template>
       </p>
       <div class="modal__info">
-        <div>
-          <span class="modal__text">Result: </span>
+        <div v-for="field in ['Result', 'Date', 'Time']" :key="field">
+          <span class="modal__text">{{ field }}: </span>
           <template v-if="isEditing">
-            <input class="modal__input" v-model="editedEvent.result" />
+            <input class="modal__input" v-model="editedEvent[field.toLowerCase()]" />
           </template>
           <template v-else>
-            {{ event.result }}
-          </template>
-        </div>
-        <div>
-          <span class="modal__text">Date: </span>
-          <template v-if="isEditing">
-            <input class="modal__input" v-model="editedEvent.date" />
-          </template>
-          <template v-else>
-            {{ event.date }}
-          </template>
-        </div>
-        <div>
-          <span class="modal__text">Time: </span>
-          <template v-if="isEditing">
-            <input class="modal__input" v-model="editedEvent.time" />
-          </template>
-          <template v-else>
-            {{ event.time }}
+            {{ displayField(isEditing, editedEvent[field.toLowerCase()], event[field.toLowerCase()]) }}
           </template>
         </div>
       </div>
@@ -60,6 +42,7 @@
 import { SportEvent } from '@/types/interfaces/sportEvent';
 import { SAVE_LABEL, CLOSE_LABEL, CANCEL_LABEL, EDIT_LABEL } from '@/constants';
 import { defineComponent } from 'vue';
+import { deleteEventFromLocalStorage, updateLocalStorage } from '@/helpers/data-handling/localStorageHelpers';
 
 export default defineComponent({
   props: ['event'],
@@ -78,23 +61,28 @@ export default defineComponent({
     },
   },
   methods: {
-    closeModal() {
+    displayField(isEditing: boolean, editedValue: string, originalValue: string): string {
+      return isEditing ? editedValue : originalValue;
+    },
+    closeModal(): void {
       if (this.isEditing) {
         this.updateEventInStore(this.editedEvent);
+        updateLocalStorage(this.editedEvent);
       }
       this.$emit('close');
     },
-    editModal() {
+    editModal(): void {
       this.isEditing = true;
     },
-    toggleEditing() {
+    toggleEditing(): void {
       this.isEditing = !this.isEditing;
     },
-    updateEventInStore(updatedEvent: SportEvent) {
+    updateEventInStore(updatedEvent: SportEvent): void {
       this.$store.dispatch('events/updateEvent', updatedEvent);
     },
-    deleteEvent(eventId: string) {
+    deleteEvent(eventId: string): void {
       this.$store.dispatch('events/deleteEvent', eventId);
+      deleteEventFromLocalStorage(eventId);
       this.$emit('close');
     },
   },

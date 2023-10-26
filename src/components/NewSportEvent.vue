@@ -39,7 +39,11 @@ import { defineComponent } from 'vue';
 import state from '../state';
 import { v4 as uuidv4 } from 'uuid';
 import { SportEvent } from '@/types/interfaces/sportEvent';
-import { loadEventsFromLocalStorage } from '@/helpers/data-handling/dataHandling';
+import {
+  loadEventsFromLocalStorage,
+  updateLocalStorageItems,
+  handleError,
+} from '@/helpers/data-handling/localStorageHelpers';
 
 export default defineComponent({
   data() {
@@ -95,9 +99,9 @@ export default defineComponent({
         const savedEvents = loadEventsFromLocalStorage() || [];
 
         savedEvents.push(formModel);
-        localStorage.setItem('events', JSON.stringify(savedEvents));
+        updateLocalStorageItems(savedEvents);
       } catch (error) {
-        console.error('Error saving event to local storage:', error);
+        handleError(error);
       }
     },
   },
@@ -131,10 +135,6 @@ export default defineComponent({
 
 .new-event__field {
   margin-bottom: 10px;
-}
-
-.new-event__label {
-  font-weight: bold;
 }
 
 .new-event__input {

@@ -27,7 +27,8 @@ import { PageNames } from '@/types/enums/pageNames';
 import { SportEvent } from '@/types/interfaces/sportEvent';
 import EventDetail from './EventDetail.vue';
 import { getFormattedDate, isCurrentDate } from '@/helpers/date-helpers/dateHelpers';
-import { loadEventsFromLocalStorage, fetchAndSaveEvents, sortEventsByTime } from '@/helpers/data-handling/dataHandling';
+import { fetchAndSaveEvents, sortEventsByTime } from '@/helpers/data-handling/dataHandling';
+import { loadEventsFromLocalStorage } from '@/helpers/data-handling/localStorageHelpers';
 
 export default defineComponent({
   props: ['date', 'navigateTo'],
@@ -55,7 +56,7 @@ export default defineComponent({
       this.events = this.events.concat(loadedEventsLocalStorage);
     }
 
-    this.$store.commit('events/updateEvents', this.events);
+    this.$store.commit('events/UPDATE_EVENTS', this.events);
   },
   setup(props) {
     const localDate = computed(() => {
@@ -86,7 +87,8 @@ export default defineComponent({
       return isCurrentDate(this.date) ? 'calendar__current-date' : '';
     },
     filteredEvents(): SportEvent[] {
-      const filtered = this.filterAndSortEvents();
+      const events = this.$store.state.events.events;
+      const filtered = this.filterAndSortEvents(events);
 
       this.updateRemainingEventsCount(filtered);
 
@@ -97,10 +99,10 @@ export default defineComponent({
     },
   },
   methods: {
-    filterAndSortEvents() {
+    filterAndSortEvents(events: SportEvent[]) {
       const eventDateToString = getFormattedDate(this.date);
 
-      return sortEventsByTime(this.events.filter((event) => event.date === eventDateToString));
+      return sortEventsByTime(events.filter((event: SportEvent) => event.date === eventDateToString));
     },
 
     updateRemainingEventsCount(filteredEvents: SportEvent[]) {

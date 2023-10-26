@@ -2,22 +2,6 @@ import SportEventsData from '@/data/sportData.json';
 import { SportEvent } from '@/types/interfaces/sportEvent';
 import { v4 as uuidv4 } from 'uuid';
 
-export function loadEventsFromLocalStorage() {
-  try {
-    const savedEvents = localStorage.getItem('events');
-
-    if (savedEvents) {
-      const parsedEvents = JSON.parse(savedEvents);
-
-      return parsedEvents;
-    }
-  } catch (error) {
-    console.error('Error loading events from local storage:', error);
-  }
-
-  return null;
-}
-
 export function fetchAndSaveEvents() {
   const eventsFromJSON = SportEventsData.data.map((eventData) => {
     const resultString = `${eventData.result.homeGoals} : ${eventData.result.awayGoals}`;
