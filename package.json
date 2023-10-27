@@ -8,7 +8,7 @@
     "build": "vite build",
     "preview": "vite preview",
     "type-check": "tsc --noEmit -p tsconfig.app.json --skipLibCheck",
-    "lint": "eslint",
+    "lint": "eslint src",
     "test": "jest",
     "format": "prettier --write \"src/**/*.{js,ts,tsx,vue}\"",
     "prepare": "husky install",
