@@ -39,19 +39,6 @@
         />
       </div>
       <div class="new-event__field">
-        <label for="eventStatus" class="new-event__label"
-          >Status:
-          <input
-            type="checkbox"
-            id="eventStatus"
-            class="new-event__status"
-            :class="[themeClass]"
-            v-model="formData.status"
-          />
-          Played
-        </label>
-      </div>
-      <div class="new-event__field">
         <label for="eventResult" class="new-event__label">Result:</label>
         <input type="text" id="eventResult" class="new-event__input" :class="[themeClass]" v-model="formData.result" />
       </div>

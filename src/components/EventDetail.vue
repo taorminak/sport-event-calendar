@@ -107,6 +107,7 @@ $primaryHoverColor: #927faf;
 
   &__content {
     background: #fff;
+    color: #27263d;
     padding: 40px;
     width: 40vw;
     min-height: 40vh;
